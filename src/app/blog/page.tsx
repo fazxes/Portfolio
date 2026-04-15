@@ -1,26 +1,36 @@
+/* eslint-disable @next/next/no-img-element */
 import BlurFade from "@/components/magicui/blur-fade";
-import { allPosts } from "content-collections";
+import { DATA } from "@/data/resume";
 import Link from "next/link";
 import type { Metadata } from "next";
 import { paginate, normalizePage } from "@/lib/pagination";
-import { ChevronRight } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "Blog",
-  description: "Thoughts on software development, life, and more.",
+  description: "Deep dives, reality checks, and announcements from the Orbit blog.",
   openGraph: {
     title: "Blog",
-    description: "Thoughts on software development, life, and more.",
+    description: "Deep dives, reality checks, and announcements from the Orbit blog.",
   },
   twitter: {
     card: "summary_large_image",
     title: "Blog",
-    description: "Thoughts on software development, life, and more.",
+    description: "Deep dives, reality checks, and announcements from the Orbit blog.",
   },
 };
 
-const PAGE_SIZE = 5;
+const PAGE_SIZE = 8;
 const BLUR_FADE_DELAY = 0.04;
+
+function formatDate(iso: string): string {
+  const d = new Date(iso);
+  return d.toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+  });
+}
 
 export default async function BlogPage({
   searchParams,
@@ -29,17 +39,13 @@ export default async function BlogPage({
 }) {
   const { page: pageParam } = await searchParams;
 
-  const posts = allPosts;
-  const sortedPosts = [...posts].sort((a, b) => {
-    if (new Date(a.publishedAt) > new Date(b.publishedAt)) {
-      return -1;
-    }
-    return 1;
-  });
+  const posts = [...DATA.blog].sort(
+    (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+  );
 
-  const totalPages = Math.ceil(sortedPosts.length / PAGE_SIZE);
+  const totalPages = Math.ceil(posts.length / PAGE_SIZE);
   const currentPage = normalizePage(pageParam, totalPages);
-  const { items: paginatedPosts, pagination } = paginate(sortedPosts, {
+  const { items: paginatedPosts, pagination } = paginate(posts, {
     page: currentPage,
     pageSize: PAGE_SIZE,
   });
@@ -47,92 +53,91 @@ export default async function BlogPage({
   return (
     <section id="blog">
       <BlurFade delay={BLUR_FADE_DELAY}>
-        <h1 className="text-2xl font-semibold tracking-tight mb-2">Blog <span className="ml-1 bg-card border border-border rounded-md px-2 py-1 text-muted-foreground text-sm">{sortedPosts.length} posts</span></h1>
+        <h1 className="text-2xl font-semibold tracking-tight mb-2">
+          Blog
+          <span className="ml-1 bg-card border border-border rounded-md px-2 py-1 text-muted-foreground text-sm">
+            {posts.length} posts
+          </span>
+        </h1>
         <p className="text-sm text-muted-foreground mb-8">
-          My thoughts on software development, life, and more.
+          Deep dives, reality checks, and announcements from the Orbit blog.
         </p>
       </BlurFade>
 
-      {paginatedPosts.length > 0 ? (
-        <>
-          <BlurFade delay={BLUR_FADE_DELAY * 2}>
-            <div className="flex flex-col gap-5">
-              {paginatedPosts.map((post, id) => {
-                const slug = post._meta.path.replace(/\.mdx$/, "");
-                const indexNumber = (pagination.page - 1) * PAGE_SIZE + id + 1;
-                return (
-                  <BlurFade delay={BLUR_FADE_DELAY * 3 + id * 0.05} key={slug}>
-                    <Link
-                      className="flex items-start gap-x-2 group cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-                      href={`/blog/${slug}`}
-                    >
-                      <span className="text-xs font-mono tabular-nums font-medium mt-[5px]">
-                        {String(indexNumber).padStart(2, "0")}.
-                      </span>
-                      <div className="flex flex-col gap-y-2 flex-1">
-                        <p className="tracking-tight text-lg font-medium">
-                          <span className="group-hover:text-foreground transition-colors">
-                            {post.title}
-                            <ChevronRight
-                              className="ml-1 inline-block size-4 stroke-3 text-muted-foreground opacity-0 -translate-x-2 transition-all duration-200 group-hover:opacity-100 group-hover:translate-x-0"
-                              aria-hidden
-                            />
-                          </span>
-                        </p>
-                        <p className="text-xs text-muted-foreground">
-                          {post.publishedAt}
-                        </p>
-                      </div>
-                    </Link>
-                  </BlurFade>
-                );
-              })}
-            </div>
-          </BlurFade>
-
-          {/* Pagination Controls */}
-          {pagination.totalPages > 1 && (
-            <BlurFade delay={BLUR_FADE_DELAY * 4}>
-              <div className="flex gap-3 flex-row items-center justify-between mt-8">
-                <div className="text-sm text-muted-foreground">
-                  Page {pagination.page} of {pagination.totalPages}
+      <BlurFade delay={BLUR_FADE_DELAY * 2}>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          {paginatedPosts.map((post, id) => (
+            <BlurFade delay={BLUR_FADE_DELAY * 3 + id * 0.05} key={post.href}>
+              <Link
+                href={post.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group flex flex-col h-full rounded-xl border border-border overflow-hidden hover:ring-2 hover:ring-muted transition-all duration-200"
+              >
+                <div className="relative shrink-0 overflow-hidden">
+                  <img
+                    src={post.image}
+                    alt={post.title}
+                    className="w-full aspect-video object-cover"
+                  />
                 </div>
-                <div className="flex gap-2 sm:justify-end">
-                  {pagination.hasPreviousPage ? (
-                    <Link
-                      href={`/blog?page=${pagination.page - 1}`}
-                      className="h-8 w-fit px-2 flex items-center justify-center text-sm border border-border rounded-lg hover:bg-accent/50 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-                    >
-                      Previous
-                    </Link>
-                  ) : (
-                    <span className="h-8 w-fit px-2 flex items-center justify-center text-sm border border-border rounded-lg opacity-50 cursor-not-allowed">
-                      Previous
-                    </span>
-                  )}
-                  {pagination.hasNextPage ? (
-                    <Link
-                      href={`/blog?page=${pagination.page + 1}`}
-                      className="h-8 w-fit px-2 flex items-center justify-center text-sm border border-border rounded-lg hover:bg-accent/50 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-                    >
-                      Next
-                    </Link>
-                  ) : (
-                    <span className="h-8 w-fit px-2 flex items-center justify-center text-sm border border-border rounded-lg opacity-50 cursor-not-allowed">
-                      Next
-                    </span>
-                  )}
+                <div className="p-4 flex flex-col gap-2 flex-1">
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="flex flex-col gap-1 min-w-0">
+                      <time className="text-xs text-muted-foreground tabular-nums">
+                        {formatDate(post.date)}
+                      </time>
+                      <h3 className="font-semibold text-sm leading-snug">
+                        {post.title}
+                      </h3>
+                    </div>
+                    <ArrowUpRight
+                      className="size-4 text-muted-foreground group-hover:text-foreground transition-colors flex-none mt-0.5"
+                      aria-hidden
+                    />
+                  </div>
+                  <p className="text-xs text-muted-foreground leading-relaxed">
+                    {post.description}
+                  </p>
                 </div>
-              </div>
+              </Link>
             </BlurFade>
-          )}
-        </>
-      ) : (
-        <BlurFade delay={BLUR_FADE_DELAY * 2}>
-          <div className="flex flex-col items-center justify-center py-12 px-4 border border-border rounded-xl">
-            <p className="text-muted-foreground text-center">
-              No blog posts yet. Check back soon!
-            </p>
+          ))}
+        </div>
+      </BlurFade>
+
+      {pagination.totalPages > 1 && (
+        <BlurFade delay={BLUR_FADE_DELAY * 4}>
+          <div className="flex gap-3 flex-row items-center justify-between mt-8">
+            <div className="text-sm text-muted-foreground">
+              Page {pagination.page} of {pagination.totalPages}
+            </div>
+            <div className="flex gap-2 sm:justify-end">
+              {pagination.hasPreviousPage ? (
+                <Link
+                  href={`/blog?page=${pagination.page - 1}`}
+                  className="h-8 w-fit px-2 flex items-center justify-center text-sm border border-border rounded-lg hover:bg-accent/50 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                >
+                  Previous
+                </Link>
+              ) : (
+                <span className="h-8 w-fit px-2 flex items-center justify-center text-sm border border-border rounded-lg opacity-50 cursor-not-allowed">
+                  Previous
+                </span>
+              )}
+              {pagination.hasNextPage ? (
+                <Link
+                  href={`/blog?page=${pagination.page + 1}`}
+                  className="h-8 w-fit px-2 flex items-center justify-center text-sm border border-border rounded-lg hover:bg-accent/50 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                >
+                  Next
+                </Link>
+              ) : (
+                <span className="h-8 w-fit px-2 flex items-center justify-center text-sm border border-border rounded-lg opacity-50 cursor-not-allowed">
+                  Next
+                </span>
+              )}
+            </div>
           </div>
         </BlurFade>
       )}

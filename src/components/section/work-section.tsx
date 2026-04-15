@@ -1,6 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
 import { useState } from "react";
+import Markdown from "react-markdown";
 import {
   Accordion,
   AccordionContent,
@@ -77,7 +78,9 @@ export default function WorkSection() {
             </div>
           </AccordionTrigger>
           <AccordionContent className="p-0 ml-13 text-xs sm:text-sm text-muted-foreground">
-            {work.description}
+            <div className="prose max-w-full text-pretty font-sans leading-relaxed text-muted-foreground dark:prose-invert prose-a:text-foreground prose-a:underline-offset-4 hover:prose-a:underline">
+              <Markdown>{work.description}</Markdown>
+            </div>
           </AccordionContent>
         </AccordionItem>
       ))}

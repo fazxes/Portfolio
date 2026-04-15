@@ -5,6 +5,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { DATA } from "@/data/resume";
 import Link from "next/link";
 import Markdown from "react-markdown";
+import BlogSection from "@/components/section/blog-section";
 import ContactSection from "@/components/section/contact-section";
 import HackathonsSection from "@/components/section/hackathons-section";
 import ProjectsSection from "@/components/section/projects-section";
@@ -135,6 +136,11 @@ export default function Page() {
       <section id="projects">
         <BlurFade delay={BLUR_FADE_DELAY * 11}>
           <ProjectsSection />
+        </BlurFade>
+      </section>
+      <section id="blog">
+        <BlurFade delay={BLUR_FADE_DELAY * 12}>
+          <BlogSection />
         </BlurFade>
       </section>
       {DATA.hackathons.length > 0 && (
