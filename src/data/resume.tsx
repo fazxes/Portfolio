@@ -29,6 +29,7 @@ export const DATA = {
         "The frontend cloud. Build, preview, and ship on the platform behind Next.js.",
       image: "/vercel.png",
       imageFit: "contain",
+      imageBg: "bg-black",
       domain: "vercel.com",
     },
     "recursive.ac": {
@@ -51,8 +52,10 @@ export const DATA = {
       title: "Pranit Sharma",
       description:
         "Software Engineer at Vercel. Previously built Orbit at Recursive Labs.",
-      image: "https://opengraph.githubassets.com/1/fazxes",
+      image:
+        "https://raw.githubusercontent.com/fazxes/Portfolio/main/.github/fazxes-banner.png",
       imageFit: "cover",
+      imageAspect: "900/300",
       domain: "github.com/fazxes",
     },
   },

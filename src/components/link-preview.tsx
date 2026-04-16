@@ -15,6 +15,8 @@ interface LinkPreviewData {
   description: string;
   image: string;
   imageFit: "cover" | "contain";
+  imageBg?: "bg-black" | "bg-muted";
+  imageAspect?: string;
   domain: string;
 }
 
@@ -65,9 +67,10 @@ export function LinkPreview({ href, children, className }: Props) {
         >
           <div
             className={cn(
-              "relative aspect-[1200/630] w-full overflow-hidden",
-              preview.imageFit === "contain" ? "bg-black" : "bg-muted",
+              "relative w-full overflow-hidden",
+              preview.imageBg ?? "bg-muted",
             )}
+            style={{ aspectRatio: preview.imageAspect ?? "1200/630" }}
           >
             <img
               src={preview.image}
