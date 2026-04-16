@@ -11,6 +11,7 @@ import GitHubSection from "@/components/section/github-section";
 import HackathonsSection from "@/components/section/hackathons-section";
 import ProjectsSection from "@/components/section/projects-section";
 import WorkSection from "@/components/section/work-section";
+import { LinkPreview } from "@/components/link-preview";
 import { ArrowUpRight } from "lucide-react";
 
 const BLUR_FADE_DELAY = 0.04;
@@ -22,12 +23,17 @@ export default function Page() {
         <div className="mx-auto w-full max-w-2xl space-y-8">
           <div className="gap-2 gap-y-6 flex flex-col md:flex-row justify-between">
             <div className="gap-2 flex flex-col order-2 md:order-1">
-              <BlurFadeText
-                delay={BLUR_FADE_DELAY}
-                className="text-3xl font-semibold tracking-tight sm:text-4xl lg:text-5xl"
-                yOffset={8}
-                text={`Hi, I'm ${DATA.name.split(" ")[0]}`}
-              />
+              <BlurFade delay={BLUR_FADE_DELAY} yOffset={8} blur="8px">
+                <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl lg:text-5xl">
+                  Hi, I&apos;m{" "}
+                  <LinkPreview
+                    href={DATA.contact.social.GitHub.url}
+                    className="decoration-muted-foreground/40 underline-offset-[6px] hover:underline"
+                  >
+                    {DATA.name.split(" ")[0]}
+                  </LinkPreview>
+                </h1>
+              </BlurFade>
               <BlurFadeText
                 className="text-muted-foreground text-pretty max-w-[600px] md:text-lg lg:text-xl"
                 delay={BLUR_FADE_DELAY}
@@ -50,7 +56,18 @@ export default function Page() {
           </BlurFade>
           <BlurFade delay={BLUR_FADE_DELAY * 4}>
             <div className="prose max-w-full text-pretty font-sans leading-relaxed text-muted-foreground dark:prose-invert">
-              <Markdown>
+              <Markdown
+                components={{
+                  a: ({ href, children, className }) => (
+                    <LinkPreview
+                      href={href ?? "#"}
+                      className={className}
+                    >
+                      {children}
+                    </LinkPreview>
+                  ),
+                }}
+              >
                 {DATA.summary}
               </Markdown>
             </div>

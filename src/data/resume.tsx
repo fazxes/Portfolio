@@ -22,6 +22,40 @@ export const DATA = {
     "Software Engineer at Vercel. Previously built Orbit at Recursive Labs.",
   summary:
     "I build developer tools. Currently at [Vercel](https://vercel.com), working on agent infrastructure. Before that I was a solo founder at [Recursive Labs](https://recursive.ac/), where I built [Orbit](https://orbit.build/), an AI-native IDE in Rust that reached 200+ users with zero marketing. I ship fast and care about craft.",
+  linkPreviews: {
+    "vercel.com": {
+      title: "Vercel",
+      description:
+        "The frontend cloud. Build, preview, and ship on the platform behind Next.js.",
+      image: "/vercel.png",
+      imageFit: "contain",
+      domain: "vercel.com",
+    },
+    "recursive.ac": {
+      title: "Recursive Labs",
+      description:
+        "AI-native developer tools and infrastructure for the next generation of software.",
+      image: "https://recursive.ac/images/og.png",
+      imageFit: "cover",
+      domain: "recursive.ac",
+    },
+    "orbit.build": {
+      title: "Orbit",
+      description:
+        "AI-native IDE for macOS. One agent with full context across editor, browser, terminal, and docs.",
+      image: "https://www.orbit.build/images/og/og-home.webp",
+      imageFit: "cover",
+      domain: "orbit.build",
+    },
+    "github.com": {
+      title: "Pranit Sharma",
+      description:
+        "Software Engineer at Vercel. Previously built Orbit at Recursive Labs.",
+      image: "https://opengraph.githubassets.com/1/fazxes",
+      imageFit: "cover",
+      domain: "github.com/fazxes",
+    },
+  },
   avatarUrl: "https://github.com/fazxes.png",
   skills: [
     { name: "React", icon: ReactLight },
