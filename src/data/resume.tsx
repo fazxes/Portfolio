@@ -21,7 +21,7 @@ export const DATA = {
   description:
     "Software Engineer at Vercel. Previously built Orbit at Recursive Labs.",
   summary:
-    "I build developer tools. Currently at [Vercel](https://vercel.com) working on agent infrastructure. Before that I was a solo founder at [Recursive Labs](https://recursive.ac/), building [Orbit](https://orbit.build/), an AI-native development environment in Rust that reached 200+ users with zero marketing. I ship fast, care about craft, and believe the best tools are the ones you'd actually want to use yourself.",
+    "I build developer tools. Currently at [Vercel](https://vercel.com), working on agent infrastructure. Before that I was a solo founder at [Recursive Labs](https://recursive.ac/), where I built [Orbit](https://orbit.build/), an AI-native IDE in Rust that reached 200+ users with zero marketing. I ship fast and care about craft.",
   avatarUrl: "https://github.com/fazxes.png",
   skills: [
     { name: "React", icon: ReactLight },

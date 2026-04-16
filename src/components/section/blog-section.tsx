@@ -50,10 +50,10 @@ export default function BlogSection() {
             <div className="flex-1 h-px bg-linear-to-l from-transparent from-5% via-border via-95% to-transparent" />
           </div>
           <div className="flex flex-col gap-y-3 items-center justify-center">
-            <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl">
+            <h2 className="text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
               Writing on AI-native dev
             </h2>
-            <p className="text-muted-foreground md:text-lg/relaxed lg:text-base/relaxed xl:text-lg/relaxed text-balance text-center">
+            <p className="text-muted-foreground text-pretty text-center md:text-lg">
               Deep dives, reality checks, and announcements from the Orbit blog.
             </p>
           </div>
@@ -86,7 +86,7 @@ export default function BlogSection() {
                           {post.readTime}
                         </span>
                       </div>
-                      <h3 className="font-semibold text-sm leading-snug">
+                      <h3 className="font-semibold text-sm">
                         {post.title}
                       </h3>
                     </div>
@@ -95,7 +95,7 @@ export default function BlogSection() {
                       aria-hidden
                     />
                   </div>
-                  <p className="text-xs text-muted-foreground leading-relaxed">
+                  <p className="text-xs text-muted-foreground">
                     {post.description}
                   </p>
                   <div className="flex flex-wrap gap-1 mt-auto pt-1">

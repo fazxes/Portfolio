@@ -85,7 +85,7 @@ export function ProjectCard({
               <time className="text-xs text-muted-foreground">{dates}</time>
             </div>
             <ArrowUpRight
-              className="h-4 w-4 text-muted-foreground group-hover:text-foreground transition-colors"
+              className="size-4 text-muted-foreground group-hover:text-foreground transition-colors"
               aria-hidden
             />
           </div>

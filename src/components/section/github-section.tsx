@@ -139,10 +139,10 @@ export default function GitHubSection() {
             <div className="flex-1 h-px bg-linear-to-l from-transparent from-5% via-border via-95% to-transparent" />
           </div>
           <div className="flex flex-col gap-y-3 items-center justify-center">
-            <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl">
+            <h2 className="text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
               Building in public
             </h2>
-            <p className="text-muted-foreground md:text-lg/relaxed lg:text-base/relaxed xl:text-lg/relaxed text-balance text-center">
+            <p className="text-muted-foreground text-pretty text-center md:text-lg">
               Most of what I build is open source. Here&apos;s what shipping looks like.
             </p>
           </div>
@@ -167,7 +167,7 @@ export default function GitHubSection() {
                   />
                 </div>
                 <meta.icon className={`relative size-4 ${meta.iconClass}`} aria-hidden />
-                <span className="relative text-2xl font-bold tracking-tight tabular-nums">
+                <span className="relative text-2xl font-semibold tracking-tight tabular-nums">
                   {stats[meta.key].toLocaleString()}
                 </span>
                 <span className="relative text-xs text-muted-foreground">
