@@ -8,6 +8,9 @@ import { Python } from "@/components/ui/svgs/python";
 import { Bun } from "@/components/ui/svgs/bun";
 import { Zig } from "@/components/ui/svgs/zig";
 import { Rust } from "@/components/ui/svgs/rust";
+import { Tauri } from "@/components/ui/svgs/tauri";
+import { WebAssembly } from "@/components/ui/svgs/webassembly";
+import { Anthropic } from "@/components/ui/svgs/anthropic";
 
 export const DATA = {
   name: "Pranit Sharma",
@@ -18,7 +21,7 @@ export const DATA = {
   description:
     "Software Engineer at Vercel. Previously built Orbit at Recursive Labs.",
   summary:
-    "Currently an engineer at [Vercel](https://vercel.com), working on something I'm excited about. Before this, I founded [Recursive Labs](https://recursive.ac/) and built [Orbit](https://orbit.build/) from zero to one, an AI-native development environment in Rust. I care about craft, ship fast, and build things I'd actually want to use.",
+    "I build developer tools. Currently at [Vercel](https://vercel.com) working on agent infrastructure. Before that I was a solo founder at [Recursive Labs](https://recursive.ac/), building [Orbit](https://orbit.build/), an AI-native development environment in Rust that reached 200+ users with zero marketing. I ship fast, care about craft, and believe the best tools are the ones you'd actually want to use yourself.",
   avatarUrl: "https://github.com/fazxes.png",
   skills: [
     { name: "React", icon: ReactLight },
@@ -29,6 +32,9 @@ export const DATA = {
     { name: "Rust", icon: Rust },
     { name: "Zig", icon: Zig },
     { name: "Python", icon: Python },
+    { name: "Tauri", icon: Tauri },
+    { name: "WebAssembly", icon: WebAssembly },
+    { name: "Claude", icon: Anthropic },
   ],
   navbar: [
     { href: "/", icon: HomeIcon, label: "Home" },

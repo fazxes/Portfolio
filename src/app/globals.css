@@ -137,6 +137,8 @@
     @apply leading-relaxed bg-transparent! font-mono!;
   }
 
+
+
   .prose code {
     @apply m-0! mx-1! border rounded-md! px-1.5 py-0.5 bg-muted/60 dark:bg-muted/40 text-[13px]! font-mono text-foreground/90!;
   }
@@ -233,4 +235,29 @@
     @apply border-b-0;
   }
 
+}
+
+/* Outside @layer so these override react-tooltip and react-activity-calendar CSS */
+.react-activity-calendar__footer {
+  display: none !important;
+}
+
+
+.react-activity-calendar__scroll-container {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-border) transparent;
+}
+
+.react-activity-calendar__scroll-container::-webkit-scrollbar {
+  height: 6px;
+}
+
+.react-activity-calendar__scroll-container::-webkit-scrollbar-track {
+  background: transparent;
+  border-radius: 9999px;
+}
+
+.react-activity-calendar__scroll-container::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: 9999px;
 }

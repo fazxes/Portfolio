@@ -7,6 +7,7 @@ import Link from "next/link";
 import Markdown from "react-markdown";
 import BlogSection from "@/components/section/blog-section";
 import ContactSection from "@/components/section/contact-section";
+import GitHubSection from "@/components/section/github-section";
 import HackathonsSection from "@/components/section/hackathons-section";
 import ProjectsSection from "@/components/section/projects-section";
 import WorkSection from "@/components/section/work-section";
@@ -132,6 +133,9 @@ export default function Page() {
             ))}
           </div>
         </div>
+      </section>
+      <section id="github">
+        <GitHubSection />
       </section>
       <section id="projects">
         <BlurFade delay={BLUR_FADE_DELAY * 11}>
