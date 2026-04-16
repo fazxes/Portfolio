@@ -18,11 +18,44 @@ const GitHubCalendar = dynamic(
 );
 
 const BLUR_FADE_DELAY = 0.04;
+const GITHUB_USER = "fazxes";
+const GITHUB_ORG = "Recusive";
 
-const stats = [
-  { label: "Stars", value: "220+", icon: Star, iconClass: "text-yellow-500 fill-yellow-500" },
-  { label: "Repos", value: "30+", icon: GitFork, iconClass: "text-blue-500" },
-  { label: "Followers", value: "17", icon: Users, iconClass: "text-violet-500" },
+interface GitHubStats {
+  stars: number;
+  repos: number;
+  followers: number;
+}
+
+async function fetchGitHubStats(): Promise<GitHubStats> {
+  const headers = { Accept: "application/vnd.github.v3+json" };
+
+  const [userRes, userReposRes, orgRes, orgReposRes] = await Promise.all([
+    fetch(`https://api.github.com/users/${GITHUB_USER}`, { headers }),
+    fetch(`https://api.github.com/users/${GITHUB_USER}/repos?per_page=100`, { headers }),
+    fetch(`https://api.github.com/orgs/${GITHUB_ORG}`, { headers }),
+    fetch(`https://api.github.com/orgs/${GITHUB_ORG}/repos?per_page=100`, { headers }),
+  ]);
+
+  const user = await userRes.json() as { public_repos: number; followers: number };
+  const userRepos = await userReposRes.json() as Array<{ stargazers_count: number }>;
+  const org = await orgRes.json() as { public_repos: number };
+  const orgRepos = await orgReposRes.json() as Array<{ stargazers_count: number }>;
+
+  const userStars = userRepos.reduce((sum, r) => sum + r.stargazers_count, 0);
+  const orgStars = orgRepos.reduce((sum, r) => sum + r.stargazers_count, 0);
+
+  return {
+    stars: userStars + orgStars,
+    repos: user.public_repos + org.public_repos,
+    followers: user.followers,
+  };
+}
+
+const statsMeta = [
+  { key: "stars" as const, label: "Stars", icon: Star, iconClass: "text-yellow-500 fill-yellow-500" },
+  { key: "repos" as const, label: "Repos", icon: GitFork, iconClass: "text-blue-500" },
+  { key: "followers" as const, label: "Followers", icon: Users, iconClass: "text-violet-500" },
 ];
 
 export default function GitHubSection() {
@@ -31,9 +64,16 @@ export default function GitHubSection() {
   const [showLeft, setShowLeft] = useState(false);
   const [showRight, setShowRight] = useState(false);
   const [totalCount, setTotalCount] = useState<string | null>(null);
+  const [stats, setStats] = useState<GitHubStats>({ stars: 0, repos: 0, followers: 0 });
   const tooltipRef = useRef<HTMLDivElement>(null);
   const username = DATA.contact.social.GitHub.url.split("/").pop() ?? "";
   const isDark = resolvedTheme === "dark";
+
+  useEffect(() => {
+    fetchGitHubStats()
+      .then((data) => { setStats(data); })
+      .catch(() => { /* keep defaults */ });
+  }, []);
 
   const updateMasks = useCallback((el: HTMLDivElement) => {
     const atLeft = el.scrollLeft <= 2;
@@ -110,9 +150,9 @@ export default function GitHubSection() {
 
         <BlurFade delay={BLUR_FADE_DELAY * 15}>
           <div className="grid grid-cols-3 gap-4 mb-6">
-            {stats.map((stat) => (
+            {statsMeta.map((meta) => (
               <div
-                key={stat.label}
+                key={meta.label}
                 className="relative flex flex-col items-center gap-1.5 p-4 rounded-xl border border-border overflow-hidden"
               >
                 <div className="absolute inset-0 bottom-auto h-[45%] rounded-xl overflow-hidden">
@@ -126,12 +166,12 @@ export default function GitHubSection() {
                     }}
                   />
                 </div>
-                <stat.icon className={`relative size-4 ${stat.iconClass}`} aria-hidden />
-                <span className="relative text-2xl font-bold tracking-tight">
-                  {stat.value}
+                <meta.icon className={`relative size-4 ${meta.iconClass}`} aria-hidden />
+                <span className="relative text-2xl font-bold tracking-tight tabular-nums">
+                  {stats[meta.key].toLocaleString()}
                 </span>
                 <span className="relative text-xs text-muted-foreground">
-                  {stat.label}
+                  {meta.label}
                 </span>
               </div>
             ))}
