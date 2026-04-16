@@ -12,7 +12,7 @@ import { Rust } from "@/components/ui/svgs/rust";
 export const DATA = {
   name: "Pranit Sharma",
   initials: "PS",
-  url: "https://pranitsharma.com",
+  url: "https://www.fazxes.com",
   location: "",
   locationLink: "",
   description:
