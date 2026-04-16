@@ -1,8 +1,6 @@
 <p align="center">
-  <img src="https://github.com/fazxes.png" alt="Pranit Sharma" width="120" style="border-radius: 50%;" />
+  <img src="./.github/fazxes-banner.png" alt="Fazxes" width="720" />
 </p>
-
-<h1 align="center">fazxes.com</h1>
 
 <p align="center">
   <strong>Personal portfolio site for Pranit Sharma.</strong><br/>
