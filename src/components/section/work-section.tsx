@@ -9,7 +9,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { DATA } from "@/data/resume";
-import { ChevronDown, ChevronRight } from "lucide-react";
+import { ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 function LogoImage({ src, alt }: { src: string; alt: string }) {
@@ -47,23 +47,15 @@ export default function WorkSection() {
                 <div className="flex-1 min-w-0 gap-0.5 flex flex-col">
                   <div className="font-semibold leading-none flex items-center gap-2">
                     {work.company}
-                    <span className="relative inline-flex items-center w-3.5 h-3.5">
-                      <ChevronRight
-                        className={cn(
-                          "absolute h-3.5 w-3.5 shrink-0 text-muted-foreground stroke-2 transition-all duration-300 ease-out",
-                          "translate-x-0 opacity-0",
-                          "group-hover:translate-x-1 group-hover:opacity-100",
-                          "group-data-[state=open]:opacity-0 group-data-[state=open]:translate-x-0"
-                        )}
-                      />
-                      <ChevronDown
-                        className={cn(
-                          "absolute h-3.5 w-3.5 shrink-0 text-muted-foreground stroke-2 transition-all duration-200",
-                          "opacity-0 rotate-0",
-                          "group-data-[state=open]:opacity-100 group-data-[state=open]:rotate-180"
-                        )}
-                      />
-                    </span>
+                    <ChevronRight
+                      className={cn(
+                        "size-3.5 shrink-0 text-muted-foreground stroke-2",
+                        "transition-all duration-300 ease-out",
+                        "opacity-0 group-hover:opacity-100 group-data-[state=open]:opacity-100",
+                        "group-data-[state=open]:rotate-90"
+                      )}
+                      aria-hidden
+                    />
                   </div>
                   <div className="font-sans text-sm text-muted-foreground">
                     {work.title}

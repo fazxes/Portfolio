@@ -18,7 +18,7 @@ export const DATA = {
   description:
     "Software Engineer at Vercel. Previously built Orbit at Recursive Labs.",
   summary:
-    "Currently an engineer at [Vercel](https://vercel.com), cooking up something I'm genuinely excited about. Stay tuned, it's going to be good. Before this, I founded [Recursive Labs](https://recursive.ac/) and built [Orbit](https://orbit.build/) from zero to one. Bullish on developer tools. I care a lot about craft, ship fast, and build the kind of things I'd actually want to use myself.",
+    "Currently an engineer at [Vercel](https://vercel.com), working on something I'm excited about. Before this, I founded [Recursive Labs](https://recursive.ac/) and built [Orbit](https://orbit.build/) from zero to one, an AI-native development environment in Rust. I care about craft, ship fast, and build things I'd actually want to use.",
   avatarUrl: "https://github.com/fazxes.png",
   skills: [
     { name: "React", icon: ReactLight },
@@ -67,10 +67,10 @@ export const DATA = {
       location: "Remote",
       title: "Software Engineer",
       logoUrl: "/vercel.png",
-      start: "2025",
+      start: "2026",
       end: "Present",
       description:
-        "Building what's next. Watch this space.",
+        "Building what's next. Watch this space.\n\n- **Stealth**",
     },
     {
       company: "Recursive Labs",
@@ -80,7 +80,7 @@ export const DATA = {
       title: "Founder",
       logoUrl: "/recursive.png",
       start: "2024",
-      end: "2025",
+      end: "2026",
       description:
         "Founded Recursive Labs to build AI-native developer tools. Shipped a suite of products:\n\n- **[Orbit](https://orbit.build/)**: AI-native IDE for macOS. One agent with full context across your editor, browser, terminal, and docs.\n- **[Agents SDK](https://www.agentsdk.build/)**: Open-source Rust SDK for production AI agents. Type-safe, async-first primitives, zero runtime overhead.\n- **[Nightshift](https://orbit.build/nightshift)**: Autonomous overnight codebase improvement agent. Run it before bed, wake up to a reviewed worktree and shift log.\n- **[OPS](https://orbit.build/ops)**: Orbit Protocol Server. 17 subsystems of real-time code quality enforcement. Deterministic rules, not prompt suggestions.\n- **[X Agent](https://orbit.build/x-agent)**: Algorithm-optimized X engagement agent. Monitors, drafts replies with Phoenix scoring, posts through the browser.\n- **[Skills](https://orbit.build/skills)**: Modular AI agent skills for Orbit, Claude Code, Cursor, Codex, and 38+ coding assistants.\n- **[Mosaic](https://www.mosaic.sh/)**: In-app testing framework that runs inside live web apps. Zero mocks, real state, real race conditions.",
     },

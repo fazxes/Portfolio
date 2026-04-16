@@ -58,7 +58,7 @@ export default function BlogSection() {
           </div>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          {DATA.blog.map((post, idx) => (
+          {DATA.blog.slice(0, 4).map((post, idx) => (
             <BlurFade
               key={post.href}
               delay={BLUR_FADE_DELAY * 14 + idx * 0.03}
@@ -97,12 +97,10 @@ export default function BlogSection() {
         </div>
         <div className="flex justify-center">
           <Link
-            href="https://orbit.build/blog"
-            target="_blank"
-            rel="noopener noreferrer"
+            href="/blog"
             className="text-sm text-muted-foreground hover:text-foreground transition-colors inline-flex items-center gap-1"
           >
-            Read more on orbit.build/blog
+            View more
             <ArrowUpRight className="size-3" aria-hidden />
           </Link>
         </div>
