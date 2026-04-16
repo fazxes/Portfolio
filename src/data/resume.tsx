@@ -267,6 +267,8 @@ export const DATA = {
       description:
         "Our chat scrolled like it was drunk. Then we realized LLM apps break the assumptions every virtualization library was built on. Here's what we changed.",
       image: "https://www.orbit.build/thumbnails/measure-once-ai-chat-virtualization.webp",
+      readTime: "15 min read",
+      tags: ["AI", "Developer Tools", "Engineering"],
     },
     {
       title: "Introducing OPS: The System That Makes AI Write Code Like a Senior Engineer",
@@ -275,6 +277,8 @@ export const DATA = {
       description:
         "AI writes working code that ignores your conventions. OPS is 17 subsystems of real-time enforcement that turn suggestions into laws, so every AI-written line meets your standards.",
       image: "https://www.orbit.build/thumbnails/introducing-ops-orbit-protocol-server.webp",
+      readTime: "8 min read",
+      tags: ["AI", "Developer Tools", "Code Quality"],
     },
     {
       title: "Project Glasswing: Anthropic Built an AI That Finds Zero-Days Faster Than Humans",
@@ -283,6 +287,8 @@ export const DATA = {
       description:
         "Claude Mythos Preview scores 93.9% on SWE-bench, found thousands of zero-day vulnerabilities across major OSes and browsers, and Anthropic says it's too dangerous to release publicly.",
       image: "https://www.orbit.build/thumbnails/anthropic-project-glasswing-claude-mythos.webp",
+      readTime: "9 min read",
+      tags: ["AI", "Security", "Vulnerabilities"],
     },
     {
       title: "Introducing Nightshift: An Autonomous Overnight Agent That Actually Works",
@@ -291,6 +297,8 @@ export const DATA = {
       description:
         "Nightshift is an open-source Python orchestrator that runs AI agents overnight to harden your codebase, build features, and produce auditable shift logs by morning.",
       image: "https://www.orbit.build/thumbnails/nightshift-blog-v2.webp",
+      readTime: "7 min read",
+      tags: ["AI", "Agent", "Developer Tools"],
     },
     {
       title: "The AI Coding Toolchain Wars: Why Every Company Wants to Own Your Workflow",
@@ -299,6 +307,8 @@ export const DATA = {
       description:
         "OpenAI bought Astral. Anthropic shipped Channels. The Pentagon can't quit Claude. The AI coding tools war of 2026 is about vendor lock-in.",
       image: "https://www.orbit.build/thumbnails/ai-coding-toolchain-wars-march-2026.webp",
+      readTime: "9 min read",
+      tags: ["AI", "Developer Tools", "OpenAI"],
     },
     {
       title: "From Vibe Coding to Agentic Engineering: What the $285B SaaSpocalypse Means for How We Build Software",
@@ -307,6 +317,8 @@ export const DATA = {
       description:
         "Karpathy says vibe coding is passé. $285B in software stocks just evaporated. The era of agentic engineering is here, and it changes everything about developer tools.",
       image: "https://www.orbit.build/thumbnails/agentic-engineering-saaspocalypse-v2.webp",
+      readTime: "10 min read",
+      tags: ["Agentic Engineering", "Vibe Coding", "AI"],
     },
     {
       title: "AI Coding Just Got Its Biggest Validation Yet: MIT's 2026 Breakthrough Technologies",
@@ -315,6 +327,8 @@ export const DATA = {
       description:
         "MIT Technology Review named generative coding a breakthrough technology alongside nuclear reactors and gene editing. Here's what it means for developers.",
       image: "https://www.orbit.build/thumbnails/mit-breakthrough-generative-coding.webp",
+      readTime: "12 min read",
+      tags: ["AI Coding", "Vibe Coding", "MIT Technology Review"],
     },
     {
       title: "The AI Coding Reality Check: What 2025 Taught Us About Hype vs. Evidence",
@@ -323,6 +337,8 @@ export const DATA = {
       description:
         "Independent studies show AI coding gains are far more modest than vendors claim. Here's what the data actually says about productivity, code quality, and job impact.",
       image: "https://www.orbit.build/thumbnails/ai-coding-hype-vs-evidence.webp",
+      readTime: "15 min read",
+      tags: ["AI Coding", "Developer Productivity", "Research"],
     },
     {
       title: "The AI Coding Reality Check: What the Research Actually Shows",
@@ -331,6 +347,8 @@ export const DATA = {
       description:
         "MIT Tech Review's investigation reveals a stark disconnect between AI coding hype and developer experience. Here's what the data says.",
       image: "https://www.orbit.build/thumbnails/ai-coding-reality-check-v2.webp",
+      readTime: "14 min read",
+      tags: ["AI Coding", "Developer Productivity", "Research"],
     },
     {
       title: "Inside Anthropic: What 200,000 Claude Sessions Reveal About AI-Assisted Coding",
@@ -339,6 +357,8 @@ export const DATA = {
       description:
         "Anthropic studied their own engineers' Claude Code usage. The findings (50% productivity gains alongside skill atrophy concerns) preview software development's future.",
       image: "https://www.orbit.build/thumbnails/anthropic-ai-work-study.webp",
+      readTime: "12 min read",
+      tags: ["AI Coding", "Productivity", "Claude Code"],
     },
     {
       title: "Zero Config Development: Why Setup Is the Enemy of Shipping",
@@ -347,6 +367,8 @@ export const DATA = {
       description:
         "Every hour spent on configuration is an hour not spent building. Here's the case for zero-config development and how it changes everything.",
       image: "https://www.orbit.build/thumbnails/zero-config-development.webp",
+      readTime: "7 min read",
+      tags: ["Developer Experience", "Productivity", "Configuration"],
     },
     {
       title: "Why IDEs Are Dying (And What's Replacing Them)",
@@ -355,6 +377,8 @@ export const DATA = {
       description:
         "The Integrated Development Environment had a 40-year run. Here's why the era of IDEs is ending and what comes next.",
       image: "https://www.orbit.build/thumbnails/why-ides-are-dying.webp",
+      readTime: "8 min read",
+      tags: ["IDEs", "Development Tools", "UDE"],
     },
     {
       title: "What Is Vibe Coding? The New Way to Build Software",
@@ -363,6 +387,8 @@ export const DATA = {
       description:
         "Vibe coding means describing what you want and letting AI figure out how. Here's where the term came from, what research says about it, and whether it actually works.",
       image: "https://www.orbit.build/thumbnails/what-is-vibe-coding.webp",
+      readTime: "12 min read",
+      tags: ["Vibe Coding", "AI", "Development"],
     },
     {
       title: "Vibe Coding: A Beginner's Guide to Building Without Learning to Code",
@@ -371,6 +397,8 @@ export const DATA = {
       description:
         "You don't need to learn programming. Describe what you want, AI builds it. Here's your complete guide to vibe coding.",
       image: "https://www.orbit.build/thumbnails/vibe-coding-beginners-guide.webp",
+      readTime: "9 min read",
+      tags: ["Vibe Coding", "No-Code", "Beginners"],
     },
     {
       title: "Does AI Actually Make Developers More Productive? What 10 Studies Say",
@@ -379,6 +407,8 @@ export const DATA = {
       description:
         "GitHub claims 55% faster. A new study found 19% slower. Here's what the research actually shows about AI coding tool productivity and why the results conflict.",
       image: "https://www.orbit.build/thumbnails/ai-coding-productivity-research.webp",
+      readTime: "11 min read",
+      tags: ["AI", "Productivity", "Research"],
     },
     {
       title: "The Week AI Coding Changed Forever: Claude Opus 4.5, AWS Frontier Agents, and the $1B Milestone",
@@ -387,6 +417,8 @@ export const DATA = {
       description:
         "In late November 2025, three tech giants released competing AI coding models within days. Here's what happened, what the benchmarks show, and what it means for developers.",
       image: "https://www.orbit.build/thumbnails/ai-coding-december-2025-developments.webp",
+      readTime: "12 min read",
+      tags: ["AI", "Claude", "AWS"],
     },
     {
       title: "Is AI-Generated Code Secure? What the Research Shows",
@@ -395,6 +427,8 @@ export const DATA = {
       description:
         "Studies find 45-48% of AI-generated code contains security vulnerabilities. Here's what enterprises need to know before adopting AI coding tools.",
       image: "https://www.orbit.build/thumbnails/ai-code-security-vulnerabilities.webp",
+      readTime: "10 min read",
+      tags: ["Security", "AI", "Vulnerabilities"],
     },
     {
       title: "60+ Best Free React UI Libraries & Component Kits for 2025",
@@ -403,6 +437,8 @@ export const DATA = {
       description:
         "The ultimate curated list of React component libraries, animation tools, and UI kits to build stunning modern interfaces. From shadcn to Aceternity, all covered.",
       image: "https://www.orbit.build/thumbnails/react-components-libraries.webp",
+      readTime: "12 min read",
+      tags: ["UI Libraries", "React", "Components"],
     },
     {
       title: "AI-Powered Development: How Coding Agents Are Changing Everything",
@@ -411,6 +447,8 @@ export const DATA = {
       description:
         "The shift from autocomplete to autonomous coding agents is here. Learn how AI agents are transforming software development and what it means for your workflow.",
       image: "https://www.orbit.build/thumbnails/ai-powered-development.webp",
+      readTime: "8 min read",
+      tags: ["AI", "Coding Agents", "Development"],
     },
     {
       title: "Introducing the UDE: Why IDEs Aren't Enough Anymore",
@@ -419,6 +457,8 @@ export const DATA = {
       description:
         "Coining a new term: the Unified Development Environment. Here's why the fragmented IDE era is ending and what comes next.",
       image: "https://www.orbit.build/thumbnails/unified-development-environments.webp",
+      readTime: "7 min read",
+      tags: ["UDE", "Development Tools", "Productivity"],
     },
     {
       title: "The Context Switching Tax: Why Developers Are Losing 4 Hours Daily",
@@ -427,6 +467,8 @@ export const DATA = {
       description:
         "Every alt-tab costs you more than you think. Here's the science behind context switching and how to reclaim your focus.",
       image: "https://www.orbit.build/thumbnails/context-switching-tax.webp",
+      readTime: "6 min read",
+      tags: ["Productivity", "Focus", "Development"],
     },
     {
       title: "Multi-Model AI: Why One LLM Isn't Enough for Development",
@@ -435,6 +477,8 @@ export const DATA = {
       description:
         "GPT-5, Claude, Gemini. Each model has strengths and weaknesses. Smart developers use them all. Here's how.",
       image: "https://www.orbit.build/thumbnails/multi-model-ai.webp",
+      readTime: "7 min read",
+      tags: ["AI", "LLM", "GPT"],
     },
     {
       title: "Plan, Execute, Critique: The Three Modes of AI-Assisted Development",
@@ -443,6 +487,8 @@ export const DATA = {
       description:
         "Stop treating AI as autocomplete. The real power is in modes: planning before coding, executing autonomously, and multi-model critique. Here's how it works.",
       image: "https://www.orbit.build/thumbnails/plan-execute-critique.webp",
+      readTime: "8 min read",
+      tags: ["AI", "Workflow", "Development"],
     },
   ],
   hackathons: [] as Array<{

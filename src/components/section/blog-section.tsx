@@ -2,9 +2,10 @@
 "use client";
 import { useState } from "react";
 import BlurFade from "@/components/magicui/blur-fade";
+import { Badge } from "@/components/ui/badge";
 import { DATA } from "@/data/resume";
 import Link from "next/link";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, Clock } from "lucide-react";
 
 const BLUR_FADE_DELAY = 0.04;
 
@@ -75,9 +76,16 @@ export default function BlogSection() {
                 <div className="p-4 flex flex-col gap-2 flex-1">
                   <div className="flex items-start justify-between gap-3">
                     <div className="flex flex-col gap-1 min-w-0">
-                      <time className="text-xs text-muted-foreground tabular-nums">
-                        {formatDate(post.date)}
-                      </time>
+                      <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                        <time className="tabular-nums">
+                          {formatDate(post.date)}
+                        </time>
+                        <span aria-hidden>&middot;</span>
+                        <span className="inline-flex items-center gap-1">
+                          <Clock className="size-3" aria-hidden />
+                          {post.readTime}
+                        </span>
+                      </div>
                       <h3 className="font-semibold text-sm leading-snug">
                         {post.title}
                       </h3>
@@ -90,6 +98,17 @@ export default function BlogSection() {
                   <p className="text-xs text-muted-foreground leading-relaxed">
                     {post.description}
                   </p>
+                  <div className="flex flex-wrap gap-1 mt-auto pt-1">
+                    {post.tags.map((tag) => (
+                      <Badge
+                        key={tag}
+                        className="text-[11px] font-medium border border-border h-6 w-fit px-2"
+                        variant="outline"
+                      >
+                        {tag}
+                      </Badge>
+                    ))}
+                  </div>
                 </div>
               </Link>
             </BlurFade>
