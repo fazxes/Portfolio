@@ -8,6 +8,9 @@ import { paginate, normalizePage } from "@/lib/pagination";
 export const metadata: Metadata = {
   title: "Blog",
   description: "Deep dives, reality checks, and announcements.",
+  alternates: {
+    canonical: "/blog",
+  },
   openGraph: {
     title: "Blog",
     description: "Deep dives, reality checks, and announcements.",
