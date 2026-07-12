@@ -15,14 +15,18 @@ const posts = defineCollection({
         author: z.string().optional(),
         summary: z.string(),
         image: z.string().optional(),
+        tags: z.array(z.string()).default([]),
         content: z.string(),
     }),
     transform: async (document, context) => {
         const mdx = await compileMDX(context, document, {
             remarkPlugins: [remarkGfm, remarkCodeMeta],
         });
+        const words = document.content.trim().split(/\s+/).length;
         return {
         ...document,
+            slug: document._meta.path.replace(/\.mdx$/, ""),
+            readTime: `${String(Math.max(1, Math.ceil(words / 200)))} min read`,
             mdx,
         };
     },

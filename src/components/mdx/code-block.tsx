@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect, type ComponentProps } from "react";
 import { Copy, Check } from "lucide-react";
 import { Button } from "../ui/button";
-import { codeToHtml, type BundledLanguage } from "shiki/bundle/web";
+import { codeToHtml, type BundledLanguage } from "shiki/bundle/full";
 import { cn } from "@/lib/utils";
 
 type CodeBlockProps = ComponentProps<"pre">;

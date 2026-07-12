@@ -1,12 +1,15 @@
 import { allPosts } from "content-collections";
 import { formatDate } from "@/lib/utils";
 import { DATA } from "@/data/resume";
+import BlogPostCard from "@/components/section/blog-post-card";
+import { getAllPosts } from "@/lib/blog";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { MDXContent } from "@content-collections/mdx/react";
 import { mdxComponents } from "@/mdx-components";
 import Link from "next/link";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { ChevronLeft, ChevronRight, Clock } from "lucide-react";
 
 function getSortedPosts() {
   return [...allPosts].sort((a, b) => {
@@ -93,6 +96,20 @@ export default async function Blog({
   const previousPost = currentIndex > 0 ? sortedPosts[currentIndex - 1] : null;
   const nextPost = currentIndex < sortedPosts.length - 1 ? sortedPosts[currentIndex + 1] : null;
 
+  const relatedPosts = getAllPosts()
+    .filter((p) => p.href !== `/blog/${slug}`)
+    .map((p) => ({
+      post: p,
+      sharedTags: p.tags.filter((tag) => post.tags.includes(tag)).length,
+    }))
+    .sort(
+      (a, b) =>
+        b.sharedTags - a.sharedTags ||
+        new Date(b.post.date).getTime() - new Date(a.post.date).getTime()
+    )
+    .slice(0, 2)
+    .map((r) => r.post);
+
   const getSlug = (post: (typeof sortedPosts)[0]) =>
     post._meta.path.replace(/\.mdx$/, "");
 
@@ -132,9 +149,27 @@ export default async function Blog({
         <h1 className="title font-semibold text-3xl md:text-4xl tracking-tighter leading-tight">
           {post.title}
         </h1>
-        <p className="text-sm text-muted-foreground">
-          {formatDate(post.publishedAt)}
-        </p>
+        <div className="flex items-center gap-1.5 text-sm text-muted-foreground">
+          <time className="tabular-nums">{formatDate(post.publishedAt)}</time>
+          <span aria-hidden>&middot;</span>
+          <span className="inline-flex items-center gap-1">
+            <Clock className="size-3.5" aria-hidden />
+            {post.readTime}
+          </span>
+        </div>
+        {post.tags.length > 0 && (
+          <div className="flex flex-wrap gap-1">
+            {post.tags.map((tag) => (
+              <Badge
+                key={tag}
+                className="text-[11px] font-medium border border-border h-6 w-fit px-2"
+                variant="outline"
+              >
+                {tag}
+              </Badge>
+            ))}
+          </div>
+        )}
       </div>
       <div className="my-6 flex w-full items-center">
         <div
@@ -188,6 +223,20 @@ export default async function Blog({
           )}
         </div>
       </nav>
+
+      {relatedPosts.length > 0 && (
+        <section className="mt-12">
+          <div className="mb-8 h-px w-full bg-border" />
+          <h2 className="text-xl font-semibold tracking-tight mb-4">
+            Related posts
+          </h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {relatedPosts.map((relatedPost) => (
+              <BlogPostCard key={relatedPost.href} post={relatedPost} />
+            ))}
+          </div>
+        </section>
+      )}
     </section>
   );
 }

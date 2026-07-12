@@ -1,5 +1,7 @@
 import { CodeBlock } from "@/components/mdx/code-block";
 import { MediaContainer } from "@/components/mdx/media-container";
+import { EffortAccuracyChart } from "@/components/mdx/effort-accuracy-chart";
+import { SubagentTreeDiagram } from "@/components/mdx/subagent-tree-diagram";
 import type { ComponentProps } from "react";
 
 type CodeProps = ComponentProps<"code"> & {
@@ -8,6 +10,21 @@ type CodeProps = ComponentProps<"code"> & {
 
 export const mdxComponents = {
   MediaContainer,
+  EffortAccuracyChart,
+  SubagentTreeDiagram,
+  a: ({ href, children, ...props }: ComponentProps<"a">) => {
+    const isExternal = typeof href === "string" && /^https?:\/\//.test(href);
+    return (
+      <a
+        href={href}
+        {...(isExternal && { target: "_blank", rel: "noopener noreferrer" })}
+        className="text-blue-600 dark:text-blue-400 font-medium underline underline-offset-4 decoration-blue-600/30 dark:decoration-blue-400/30 hover:decoration-blue-600 dark:hover:decoration-blue-400 transition-colors"
+        {...props}
+      >
+        {children}
+      </a>
+    );
+  },
   pre: (props: ComponentProps<"pre">) => <CodeBlock {...props} />,
   hr: (props: ComponentProps<"hr">) => (
     <div className="my-10 flex w-full items-center" {...props}>

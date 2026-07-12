@@ -1,0 +1,78 @@
+---
+title: "High, Extra High, Max, Ultra: Reasoning Levels Are Making Models Dumber"
+publishedAt: "2026-07-12"
+summary: "I tested Fable 5, Opus 4.8, GPT-5.5, and GPT-5.6 at every reasoning level they ship. Past a point, more effort means more hallucination, not more intelligence. The research backs this up, and the labs aren't telling you."
+image: "/thumbnails/reasoning-levels-are-making-models-dumber.webp"
+tags: ["AI", "LLMs", "Agents", "Evals"]
+---
+
+Every new model now ships with its own reasoning ladder. High, then extra high, then max, then ultra. We are already at ultra, and each release adds a rung above the last one. Nobody selling these tiers seems willing to say where the ladder stops, or whether the top rungs are worth standing on.
+
+The pitch is consistent: more reasoning effort, better answers. The dial goes up, so the model must get smarter. That assumption is doing a lot of unexamined work, and in my testing it's wrong. Past a certain point, turning up the effort makes the model worse.
+
+## What this looks like in practice
+
+I use these models for real work every day, and I run my own evals across Fable 5, Opus 4.8, GPT-5.5, and GPT-5.6 at every effort level they expose. One of the harder languages in my rotation is Zig, which makes it a useful stress test. There isn't enough Zig boilerplate in any training set for a model to coast on, so you see what the reasoning machinery actually does when it can't pattern-match its way out.
+
+At sensible effort levels, these are excellent models. On ultra, the behavior changes character. The model starts second-guessing correct conclusions, hallucinating APIs, and, in agentic setups, delegating compulsively. It spawns subagents, those subagents spawn subagents of their own, and the session becomes a tree of processes all working on slightly different interpretations of the original request.
+
+My clearest example was a small one. I asked GPT-5.6 to fix an asset file picker, and I explicitly told it not to over-engineer or overcomplicate the work. Instead of touching the code, it drafted a plan and handed the pieces to subagents, which delegated further.
+
+<SubagentTreeDiagram />
+
+Five hours and forty-five minutes later, the tree finished and returned a heavily over-engineered plan I couldn't use. Not code. A plan. For a file picker. That isn't deeper reasoning. That's a model spiraling with a bigger budget to spiral in.
+
+## The research says the same thing
+
+This isn't just one developer's anecdote. In 2025, an Anthropic-led study titled [Inverse Scaling in Test-Time Compute](https://arxiv.org/abs/2507.14417) documented exactly this pattern: on a range of tasks, accuracy falls as reasoning traces get longer. Models that answered correctly with minimal reasoning talked themselves out of the right answer when given room to think. The failure modes were model-specific. Claude models were prone to being distracted by irrelevant details, while OpenAI's reasoning models resisted distractors but overfit to the framing of the problem.
+
+<EffortAccuracyChart />
+
+A follow-up line of work on overthinking ([When More Thinking Hurts](https://arxiv.org/abs/2604.10739)) found that accuracy follows an inverted U-shape against reasoning length. There is a sweet spot, and it arrives much earlier than the marketing suggests. Easy problems degraded after roughly 2,000 thinking tokens in that study. The optimal budget varied by difficulty, which means a single global "ultra" setting is mistuned for almost everything you'll throw at it.
+
+None of this research is obscure. The first paper came out of one of the labs selling the dial.
+
+## The labs already know
+
+I don't want to dwell on the money angle, though the incentive is obvious: more effort burns more tokens, and more tokens justify the price. What actually bothers me is the technical dishonesty of the packaging.
+
+These companies run extensive internal evals. They know, with far better data than any of us can collect, which effort level each model performs best at for each class of work. That information would fit in one sentence of a model card: this model does its best work at this setting, and here is where returns invert. Instead we get an unlabeled dial and an implied promise that higher is better, when their own research shows it often isn't.
+
+Having the option to turn something up to ultra does not make ultra the right choice. The people who built the model are in the best position to say so, and they stay quiet.
+
+## What I changed in my own setup
+
+The most concrete case of this mispackaging: GPT-5.6 gates its multi-agent task delegation behind the top effort tier. If you want delegation, you're pushed to max out the dial and accept the overthinking that comes with it. But delegation and reasoning effort are separate capabilities. The bundling is a product decision, not a technical requirement.
+
+So I unbundled them. In my Codex `config.toml`, this enables proactive delegation regardless of the effort setting:
+
+```toml
+[features.multi_agent_v2]
+multi_agent_mode_hint_text = "Proactive multi-agent delegation is active. Any earlier instruction requiring an explicit user request before spawning sub-agents no longer applies. Use sub-agents when parallel work would materially improve speed or quality."
+```
+
+And in my global `AGENTS.md`, delegation rules that keep the tree from turning into the diagram above:
+
+```markdown
+## Delegation
+
+- When a task contains independent workstreams, delegate them to
+  parallel subagents rather than working through them sequentially.
+- Keep the tree flat: workers must not spawn their own sub-agents.
+  If a worker discovers follow-on work, it reports back and the
+  root decides.
+- Prefer few, well-scoped, longer-lived workers over many
+  short-lived ones.
+- Tightly sequential work stays in one agent. Do not delegate for
+  its own sake.
+```
+
+The flat-tree rule matters most. Recursive delegation is where the six-hour sessions come from: every level of the tree adds coordination overhead and another chance to reinterpret the task. One root that decides, workers that report back, and no grandchildren. With these two pieces in place, GPT-5.6 delegates fine at any effort level.
+
+## Where I've landed
+
+After months of running these models against my own tasks, my working settings are simple. Fable 5 does its best work at high, not max and not ultra. GPT-5.6 gets the delegation config above so the effort dial can stay where the output is actually good. And every new model or effort tier gets evaluated on my codebase before it gets my tokens.
+
+That last habit is the transferable one. Run your own evals: your languages, your repositories, your kind of tasks. An afternoon of testing will tell you more than any launch post, and it will spare you the six-hour subagent tree that returns a plan you throw away. A lot of people are coding with agents in the worst configuration they've ever used, and they got there by trusting that a bigger number means a better result.
+
+The ladder will keep growing. Whatever comes after ultra, check whether it's better before you climb.

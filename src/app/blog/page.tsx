@@ -1,37 +1,26 @@
-/* eslint-disable @next/next/no-img-element */
 import BlurFade from "@/components/magicui/blur-fade";
-import { Badge } from "@/components/ui/badge";
-import { DATA } from "@/data/resume";
+import BlogPostCard from "@/components/section/blog-post-card";
+import { getAllPosts } from "@/lib/blog";
 import Link from "next/link";
 import type { Metadata } from "next";
 import { paginate, normalizePage } from "@/lib/pagination";
-import { ArrowUpRight, Clock } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "Blog",
-  description: "Deep dives, reality checks, and announcements from the Orbit blog.",
+  description: "Deep dives, reality checks, and announcements.",
   openGraph: {
     title: "Blog",
-    description: "Deep dives, reality checks, and announcements from the Orbit blog.",
+    description: "Deep dives, reality checks, and announcements.",
   },
   twitter: {
     card: "summary_large_image",
     title: "Blog",
-    description: "Deep dives, reality checks, and announcements from the Orbit blog.",
+    description: "Deep dives, reality checks, and announcements.",
   },
 };
 
 const PAGE_SIZE = 8;
 const BLUR_FADE_DELAY = 0.04;
-
-function formatDate(iso: string): string {
-  const d = new Date(iso);
-  return d.toLocaleDateString("en-US", {
-    year: "numeric",
-    month: "short",
-    day: "numeric",
-  });
-}
 
 export default async function BlogPage({
   searchParams,
@@ -40,9 +29,7 @@ export default async function BlogPage({
 }) {
   const { page: pageParam } = await searchParams;
 
-  const posts = [...DATA.blog].sort(
-    (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
-  );
+  const posts = getAllPosts();
 
   const totalPages = Math.ceil(posts.length / PAGE_SIZE);
   const currentPage = normalizePage(pageParam, totalPages);
@@ -61,7 +48,7 @@ export default async function BlogPage({
           </span>
         </h1>
         <p className="text-sm text-muted-foreground mb-8">
-          Deep dives, reality checks, and announcements from the Orbit blog.
+          Deep dives, reality checks, and announcements.
         </p>
       </BlurFade>
 
@@ -69,57 +56,7 @@ export default async function BlogPage({
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           {paginatedPosts.map((post, id) => (
             <BlurFade delay={BLUR_FADE_DELAY * 3 + id * 0.05} key={post.href}>
-              <Link
-                href={post.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group flex flex-col h-full rounded-xl border border-border overflow-hidden hover:ring-2 hover:ring-muted transition-all duration-200"
-              >
-                <div className="relative shrink-0 overflow-hidden">
-                  <img
-                    src={post.image}
-                    alt={post.title}
-                    className="w-full aspect-video object-cover"
-                  />
-                </div>
-                <div className="p-4 flex flex-col gap-2 flex-1">
-                  <div className="flex items-start justify-between gap-3">
-                    <div className="flex flex-col gap-1 min-w-0">
-                      <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
-                        <time className="tabular-nums">
-                          {formatDate(post.date)}
-                        </time>
-                        <span aria-hidden>&middot;</span>
-                        <span className="inline-flex items-center gap-1">
-                          <Clock className="size-3" aria-hidden />
-                          {post.readTime}
-                        </span>
-                      </div>
-                      <h3 className="font-semibold text-sm leading-snug">
-                        {post.title}
-                      </h3>
-                    </div>
-                    <ArrowUpRight
-                      className="size-4 text-muted-foreground group-hover:text-foreground transition-colors flex-none mt-0.5"
-                      aria-hidden
-                    />
-                  </div>
-                  <p className="text-xs text-muted-foreground leading-relaxed">
-                    {post.description}
-                  </p>
-                  <div className="flex flex-wrap gap-1 mt-auto pt-1">
-                    {post.tags.map((tag) => (
-                      <Badge
-                        key={tag}
-                        className="text-[11px] font-medium border border-border h-6 w-fit px-2"
-                        variant="outline"
-                      >
-                        {tag}
-                      </Badge>
-                    ))}
-                  </div>
-                </div>
-              </Link>
+              <BlogPostCard post={post} />
             </BlurFade>
           ))}
         </div>
