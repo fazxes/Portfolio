@@ -32,6 +32,15 @@ export const DATA = {
       imageBg: "bg-black",
       domain: "vercel.com",
     },
+    "fx.sh": {
+      title: "fx",
+      description:
+        "Tiny, open, native coding agent. A minimal CLI written in Zig, built for research and embeddability.",
+      image: "https://fx.sh/og.png",
+      imageFit: "contain",
+      imageBg: "bg-black",
+      domain: "fx.sh",
+    },
     "recursive.ac": {
       title: "Recursive Labs",
       description:
