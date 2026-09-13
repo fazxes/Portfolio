@@ -19,9 +19,9 @@ export const DATA = {
   location: "",
   locationLink: "",
   description:
-    "Software Engineer at Vercel. Previously built Orbit at Recursive Labs.",
+    "Agent Harness Engineer at Vercel. Previously built Orbit at Recursive Labs.",
   summary:
-    "I build developer tools. Currently at [Vercel](https://vercel.com), working on agent infrastructure. Before that I was a solo founder at [Recursive Labs](https://recursive.ac/), where I built [Orbit](https://orbit.build/), an AI-native IDE in Rust that reached 200+ users with zero marketing. I ship fast and care about craft.",
+    "I build developer tools. I'm at [Vercel](https://vercel.com/) now, working on [fx](https://fx.sh/). Before that, I founded [Recursive Labs](https://recursive.ac/). I built [Orbit](https://orbit.build/) and [Agents SDK](https://www.agentsdk.build/) there, along with OPS for code quality and Nightshift + Recursive for autonomous engineering.",
   linkPreviews: {
     "vercel.com": {
       title: "Vercel",
@@ -31,6 +31,15 @@ export const DATA = {
       imageFit: "contain",
       imageBg: "bg-black",
       domain: "vercel.com",
+    },
+    "fx.sh": {
+      title: "fx",
+      description:
+        "Tiny, open, native coding agent. A minimal CLI written in Zig, built for research and embeddability.",
+      image: "https://fx.sh/og.png",
+      imageFit: "contain",
+      imageBg: "bg-black",
+      domain: "fx.sh",
     },
     "recursive.ac": {
       title: "Recursive Labs",
@@ -51,7 +60,7 @@ export const DATA = {
     "github.com": {
       title: "Pranit Sharma",
       description:
-        "Software Engineer at Vercel. Previously built Orbit at Recursive Labs.",
+        "Agent Harness Engineer at Vercel. Previously built Orbit at Recursive Labs.",
       image:
         "https://raw.githubusercontent.com/fazxes/Portfolio/main/.github/fazxes-banner.png",
       imageFit: "cover",
@@ -108,12 +117,12 @@ export const DATA = {
       href: "https://vercel.com",
       badges: [],
       location: "Remote",
-      title: "Software Engineer",
+      title: "Agent Harness Engineer",
       logoUrl: "/vercel.png",
       start: "2026",
       end: "Present",
       description:
-        "Building what's next. Watch this space.\n\n- **Stealth**",
+        "Building [fx](https://fx.sh), a tiny, open, embeddable native coding agent written in Zig.\n\n[Website](https://fx.sh) · [GitHub](https://github.com/vercel-labs/fx) · [Docs](https://fx.sh/docs)",
     },
     {
       company: "Recursive Labs",
@@ -125,7 +134,7 @@ export const DATA = {
       start: "2024",
       end: "2026",
       description:
-        "Founded Recursive Labs to build AI-native developer tools. Shipped a suite of products:\n\n- **[Orbit](https://orbit.build/)**: AI-native IDE for macOS. One agent with full context across your editor, browser, terminal, and docs.\n- **[Agents SDK](https://www.agentsdk.build/)**: Open-source Rust SDK for production AI agents. Type-safe, async-first primitives, zero runtime overhead.\n- **[Nightshift](https://orbit.build/nightshift)**: Autonomous overnight codebase improvement agent. Run it before bed, wake up to a reviewed worktree and shift log.\n- **[OPS](https://orbit.build/ops)**: Orbit Protocol Server. 17 subsystems of real-time code quality enforcement. Deterministic rules, not prompt suggestions.\n- **[X Agent](https://orbit.build/x-agent)**: Algorithm-optimized X engagement agent. Monitors, drafts replies with Phoenix scoring, posts through the browser.\n- **[Skills](https://orbit.build/skills)**: Modular AI agent skills for Orbit, Claude Code, Cursor, Codex, and 38+ coding assistants.\n- **[Mosaic](https://www.mosaic.sh/)**: In-app testing framework that runs inside live web apps. Zero mocks, real state, real race conditions.",
+        "Founded Recursive Labs to build and ship AI-native developer tools, including Orbit, Agents SDK, Nightshift, OPS, X Agent, Skills, and Mosaic.",
     },
   ],
   education: [] as Array<{
@@ -137,6 +146,35 @@ export const DATA = {
     end: string;
   }>,
   projects: [
+    {
+      title: "fx",
+      href: "https://fx.sh",
+      dates: "2026 - Present",
+      active: true,
+      description:
+        "A tiny, open, native coding agent written in Zig, designed as a minimal Unix-like CLI and an embeddable harness for larger systems.",
+      technologies: ["Zig", "Coding Agent", "CLI", "Native", "Open Source"],
+      links: [
+        {
+          type: "Website",
+          href: "https://fx.sh",
+          icon: <Icons.globe className="size-3" />,
+        },
+        {
+          type: "Source",
+          href: "https://github.com/vercel-labs/fx",
+          icon: <Icons.github className="size-3" />,
+        },
+        {
+          type: "Docs",
+          href: "https://fx.sh/docs",
+          icon: <Icons.globe className="size-3" />,
+        },
+      ],
+      image: "https://fx.sh/og.png",
+      imageFit: "contain",
+      video: "",
+    },
     {
       title: "Orbit",
       href: "https://orbit.build/",
@@ -161,7 +199,7 @@ export const DATA = {
       dates: "2024 - Present",
       active: true,
       description:
-        "Open-source Rust SDK for building production AI agents. Type-safe, async-first primitives to orchestrate models, define tools, and manage state, with zero runtime overhead.",
+        "Open-source Rust agent backend with provider integrations, tool execution, sessions, streaming, and authentication flows for Claude, ChatGPT, and Copilot.",
       technologies: ["Rust", "AI Agents", "SDK", "Open Source"],
       links: [
         {
@@ -174,12 +212,12 @@ export const DATA = {
       video: "",
     },
     {
-      title: "Nightshift",
+      title: "Nightshift + Recursive",
       href: "https://orbit.build/nightshift",
       dates: "2025 - Present",
       active: true,
       description:
-        "Autonomous overnight codebase improvement agent. Runs while you sleep, finding and fixing production-readiness issues across your entire stack. Run it before bed. Wake up to a reviewed worktree, a shift log, and a machine-readable record of what the agent actually did.",
+        "An autonomous engineering system for hardening codebases and building features, powered by a portable orchestration framework with agent lifecycle management, review, and session memory.",
       technologies: ["AI Agent", "Autonomous", "Developer Tools", "Open Source"],
       links: [
         {
@@ -202,18 +240,13 @@ export const DATA = {
       dates: "2025 - Present",
       active: true,
       description:
-        "Orbit Protocol Server. 17 subsystems of real-time code quality enforcement that make AI write code like a senior engineer. Deterministic rules, not prompt suggestions.",
+        "Programmatic code-quality enforcement for AI-generated code. Watches file changes, applies deterministic project rules, and returns diagnostics agents can act on.",
       technologies: ["Code Quality", "AI", "Developer Tools", "Open Source"],
       links: [
         {
           type: "Website",
           href: "https://orbit.build/ops",
           icon: <Icons.globe className="size-3" />,
-        },
-        {
-          type: "Source",
-          href: "https://github.com/Recusive/OPS",
-          icon: <Icons.github className="size-3" />,
         },
       ],
       image: "https://www.orbit.build/thumbnails/introducing-ops-orbit-protocol-server.webp",

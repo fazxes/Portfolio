@@ -8,6 +8,7 @@ import { useTheme } from "next-themes";
 import Link from "next/link";
 import { ArrowUpRight, GitFork, Star, Users } from "lucide-react";
 import { FlickeringGrid } from "@/components/magicui/flickering-grid";
+import { fetchGitHubStats } from "@/lib/github-stats";
 
 const GitHubCalendar = dynamic(
   () => import("react-github-calendar").then((mod) => mod.GitHubCalendar),
@@ -18,39 +19,6 @@ const GitHubCalendar = dynamic(
 );
 
 const BLUR_FADE_DELAY = 0.04;
-const GITHUB_USER = "fazxes";
-const GITHUB_ORG = "Recusive";
-
-interface GitHubStats {
-  stars: number;
-  repos: number;
-  followers: number;
-}
-
-async function fetchGitHubStats(): Promise<GitHubStats> {
-  const headers = { Accept: "application/vnd.github.v3+json" };
-
-  const [userRes, userReposRes, orgRes, orgReposRes] = await Promise.all([
-    fetch(`https://api.github.com/users/${GITHUB_USER}`, { headers }),
-    fetch(`https://api.github.com/users/${GITHUB_USER}/repos?per_page=100`, { headers }),
-    fetch(`https://api.github.com/orgs/${GITHUB_ORG}`, { headers }),
-    fetch(`https://api.github.com/orgs/${GITHUB_ORG}/repos?per_page=100`, { headers }),
-  ]);
-
-  const user = await userRes.json() as { public_repos: number; followers: number };
-  const userRepos = await userReposRes.json() as Array<{ stargazers_count: number }>;
-  const org = await orgRes.json() as { public_repos: number };
-  const orgRepos = await orgReposRes.json() as Array<{ stargazers_count: number }>;
-
-  const userStars = userRepos.reduce((sum, r) => sum + r.stargazers_count, 0);
-  const orgStars = orgRepos.reduce((sum, r) => sum + r.stargazers_count, 0);
-
-  return {
-    stars: userStars + orgStars,
-    repos: user.public_repos + org.public_repos,
-    followers: user.followers,
-  };
-}
 
 const statsMeta = [
   { key: "stars" as const, label: "Stars", icon: Star, iconClass: "text-yellow-500 fill-yellow-500" },
@@ -64,7 +32,7 @@ export default function GitHubSection() {
   const [showLeft, setShowLeft] = useState(false);
   const [showRight, setShowRight] = useState(false);
   const [totalCount, setTotalCount] = useState<string | null>(null);
-  const [stats, setStats] = useState<GitHubStats>({ stars: 0, repos: 0, followers: 0 });
+  const [stats, setStats] = useState({ stars: 0, repos: 0, followers: 0 });
   const tooltipRef = useRef<HTMLDivElement>(null);
   const username = DATA.contact.social.GitHub.url.split("/").pop() ?? "";
   const isDark = resolvedTheme === "dark";
