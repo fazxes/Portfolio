@@ -19,7 +19,7 @@ export const DATA = {
   location: "",
   locationLink: "",
   description:
-    "Software Engineer at Vercel. Previously built Orbit at Recursive Labs.",
+    "Agent Harness Engineer at Vercel. Previously built Orbit at Recursive Labs.",
   summary:
     "I build developer tools. I'm at [Vercel](https://vercel.com/) now, working on [fx](https://fx.sh/). Before that, I founded [Recursive Labs](https://recursive.ac/). I built [Orbit](https://orbit.build/) and [Agents SDK](https://www.agentsdk.build/) there, along with OPS for code quality and Nightshift + Recursive for autonomous engineering.",
   linkPreviews: {
@@ -60,7 +60,7 @@ export const DATA = {
     "github.com": {
       title: "Pranit Sharma",
       description:
-        "Software Engineer at Vercel. Previously built Orbit at Recursive Labs.",
+        "Agent Harness Engineer at Vercel. Previously built Orbit at Recursive Labs.",
       image:
         "https://raw.githubusercontent.com/fazxes/Portfolio/main/.github/fazxes-banner.png",
       imageFit: "cover",

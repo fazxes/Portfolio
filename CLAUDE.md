@@ -31,7 +31,7 @@ All portfolio content — name, description, work, projects, skills, social link
 ### Section components (`src/components/section/*`)
 
 Each reads from `DATA` and renders a single vertical section of the page:
-- `work-section.tsx` — Accordion of `DATA.work`. **Description is rendered through `react-markdown`**, so bullet lists and inline links work (Recursive Labs entry uses this to list its products).
+- `work-section.tsx` — Always-visible entries from `DATA.work`. **Descriptions are rendered through `react-markdown`**, so inline links work without hiding role details behind disclosure controls.
 - `projects-section.tsx` → `project-card.tsx` — Grid of `DATA.projects`. Each card is wrapped in a single `<Link>` (whole card is clickable). The per-project badge links live as absolutely-positioned siblings *outside* the main Link (nested `<a>` is invalid HTML). Card shows an OG image at top pulled from `image` field (typically an external URL from the linked site).
 - `blog-section.tsx` — Grid of `DATA.blog` with OG thumbnails. Homepage shows all posts; `/blog` paginates at 8/page.
 - `hackathons-section.tsx`, `contact-section.tsx` — straightforward reads.

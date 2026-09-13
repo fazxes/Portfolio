@@ -4,7 +4,7 @@
 
 <p align="center">
   <strong>Pranit Sharma.</strong> I build developer tools.<br/>
-  Software Engineer at Vercel. Previously built Orbit at Recursive Labs.
+  Agent Harness Engineer at Vercel. Previously built Orbit at Recursive Labs.
 </p>
 
 <p align="center">
@@ -17,13 +17,13 @@
 
 ## About
 
-Currently at [Vercel](https://vercel.com), working on agent infrastructure.
+Currently at [Vercel](https://vercel.com), working on [fx](https://fx.sh/).
 
-Before that I was a solo founder at [Recursive Labs](https://recursive.ac/), where I built [Orbit](https://orbit.build/), an AI-native IDE in Rust that reached 200+ users with zero marketing. I ship fast and care about craft.
+Before that, I founded [Recursive Labs](https://recursive.ac/), where I built [Orbit](https://orbit.build/), [Agents SDK](https://www.agentsdk.build/), OPS, and Nightshift + Recursive.
 
 ## Currently
 
-- **[Vercel](https://vercel.com)**. Software Engineer, building what's next. Stealth, for now.
+- **[Vercel](https://vercel.com)**. Agent Harness Engineer, working on [fx](https://fx.sh/).
 
 ## Selected Work
 
