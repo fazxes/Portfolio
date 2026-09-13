@@ -25,7 +25,7 @@ export default function ProjectsSection() {
                     <div className="flex flex-col gap-y-3 items-center justify-center">
                         <h2 className="text-3xl font-semibold tracking-tight text-balance sm:text-4xl">Check out my latest work</h2>
                         <p className="text-muted-foreground text-pretty text-center md:text-lg">
-                            Developer tools, SDKs, and autonomous agents. All built at Recursive Labs.
+                            Developer tools, SDKs, and autonomous agents I&apos;ve built.
                         </p>
                     </div>
                 </div>
@@ -54,4 +54,3 @@ export default function ProjectsSection() {
         </section>
     );
 }
-

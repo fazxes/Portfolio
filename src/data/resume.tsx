@@ -125,7 +125,7 @@ export const DATA = {
       start: "2024",
       end: "2026",
       description:
-        "Founded Recursive Labs to build AI-native developer tools. Shipped a suite of products:\n\n- **[Orbit](https://orbit.build/)**: AI-native IDE for macOS. One agent with full context across your editor, browser, terminal, and docs.\n- **[Agents SDK](https://www.agentsdk.build/)**: Open-source Rust SDK for production AI agents. Type-safe, async-first primitives, zero runtime overhead.\n- **[Nightshift](https://orbit.build/nightshift)**: Autonomous overnight codebase improvement agent. Run it before bed, wake up to a reviewed worktree and shift log.\n- **[OPS](https://orbit.build/ops)**: Orbit Protocol Server. 17 subsystems of real-time code quality enforcement. Deterministic rules, not prompt suggestions.\n- **[X Agent](https://orbit.build/x-agent)**: Algorithm-optimized X engagement agent. Monitors, drafts replies with Phoenix scoring, posts through the browser.\n- **[Skills](https://orbit.build/skills)**: Modular AI agent skills for Orbit, Claude Code, Cursor, Codex, and 38+ coding assistants.\n- **[Mosaic](https://www.mosaic.sh/)**: In-app testing framework that runs inside live web apps. Zero mocks, real state, real race conditions.",
+        "Founded Recursive Labs to build and ship AI-native developer tools, including Orbit, Agents SDK, Nightshift, OPS, X Agent, Skills, and Mosaic.",
     },
   ],
   education: [] as Array<{
@@ -137,6 +137,34 @@ export const DATA = {
     end: string;
   }>,
   projects: [
+    {
+      title: "fx",
+      href: "https://fx.sh",
+      dates: "2026 - Present",
+      active: true,
+      description:
+        "A tiny, open, native coding agent written in Zig, designed as a minimal Unix-like CLI and an embeddable harness for larger systems.",
+      technologies: ["Zig", "Coding Agent", "CLI", "Native", "Open Source"],
+      links: [
+        {
+          type: "Website",
+          href: "https://fx.sh",
+          icon: <Icons.globe className="size-3" />,
+        },
+        {
+          type: "Source",
+          href: "https://github.com/vercel-labs/fx",
+          icon: <Icons.github className="size-3" />,
+        },
+        {
+          type: "Docs",
+          href: "https://fx.sh/docs",
+          icon: <Icons.globe className="size-3" />,
+        },
+      ],
+      image: "https://fx.sh/og.png",
+      video: "",
+    },
     {
       title: "Orbit",
       href: "https://orbit.build/",
