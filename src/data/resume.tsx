@@ -108,7 +108,7 @@ export const DATA = {
       href: "https://vercel.com",
       badges: [],
       location: "Remote",
-      title: "Software Engineer",
+      title: "Agent Harness Engineer",
       logoUrl: "/vercel.png",
       start: "2026",
       end: "Present",
