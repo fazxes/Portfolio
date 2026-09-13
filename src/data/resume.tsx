@@ -163,6 +163,7 @@ export const DATA = {
         },
       ],
       image: "https://fx.sh/og.png",
+      imageFit: "contain",
       video: "",
     },
     {
