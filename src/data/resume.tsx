@@ -113,7 +113,7 @@ export const DATA = {
       start: "2026",
       end: "Present",
       description:
-        "Building what's next. Watch this space.\n\n- **Stealth**",
+        "Building [fx](https://fx.sh), a tiny, open, embeddable native coding agent written in Zig.\n\n[Website](https://fx.sh) · [GitHub](https://github.com/vercel-labs/fx) · [Docs](https://fx.sh/docs)",
     },
     {
       company: "Recursive Labs",
