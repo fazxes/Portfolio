@@ -21,7 +21,7 @@ export const DATA = {
   description:
     "Software Engineer at Vercel. Previously built Orbit at Recursive Labs.",
   summary:
-    "I build developer tools. I'm at [Vercel](https://vercel.com/) now, working on [fx](https://fx.sh/). Before that, I founded [Recursive Labs](https://recursive.ac/) and built [Orbit](https://orbit.build/), an AI-native IDE in Rust that reached 200+ users without marketing.",
+    "I build developer tools. I'm at [Vercel](https://vercel.com/) now, working on [fx](https://fx.sh/). Before that, I founded [Recursive Labs](https://recursive.ac/). I built [Orbit](https://orbit.build/) and [Agents SDK](https://www.agentsdk.build/) there, along with OPS for code quality and Nightshift + Recursive for autonomous engineering.",
   linkPreviews: {
     "vercel.com": {
       title: "Vercel",
@@ -199,7 +199,7 @@ export const DATA = {
       dates: "2024 - Present",
       active: true,
       description:
-        "Open-source Rust SDK for building production AI agents. Type-safe, async-first primitives to orchestrate models, define tools, and manage state, with zero runtime overhead.",
+        "Open-source Rust agent backend with provider integrations, tool execution, sessions, streaming, and authentication flows for Claude, ChatGPT, and Copilot.",
       technologies: ["Rust", "AI Agents", "SDK", "Open Source"],
       links: [
         {
@@ -212,12 +212,12 @@ export const DATA = {
       video: "",
     },
     {
-      title: "Nightshift",
+      title: "Nightshift + Recursive",
       href: "https://orbit.build/nightshift",
       dates: "2025 - Present",
       active: true,
       description:
-        "Autonomous overnight codebase improvement agent. Runs while you sleep, finding and fixing production-readiness issues across your entire stack. Run it before bed. Wake up to a reviewed worktree, a shift log, and a machine-readable record of what the agent actually did.",
+        "An autonomous engineering system for hardening codebases and building features, powered by a portable orchestration framework with agent lifecycle management, review, and session memory.",
       technologies: ["AI Agent", "Autonomous", "Developer Tools", "Open Source"],
       links: [
         {
@@ -240,18 +240,13 @@ export const DATA = {
       dates: "2025 - Present",
       active: true,
       description:
-        "Orbit Protocol Server. 17 subsystems of real-time code quality enforcement that make AI write code like a senior engineer. Deterministic rules, not prompt suggestions.",
+        "Programmatic code-quality enforcement for AI-generated code. Watches file changes, applies deterministic project rules, and returns diagnostics agents can act on.",
       technologies: ["Code Quality", "AI", "Developer Tools", "Open Source"],
       links: [
         {
           type: "Website",
           href: "https://orbit.build/ops",
           icon: <Icons.globe className="size-3" />,
-        },
-        {
-          type: "Source",
-          href: "https://github.com/Recusive/OPS",
-          icon: <Icons.github className="size-3" />,
         },
       ],
       image: "https://www.orbit.build/thumbnails/introducing-ops-orbit-protocol-server.webp",
