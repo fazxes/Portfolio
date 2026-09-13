@@ -21,7 +21,7 @@ export const DATA = {
   description:
     "Software Engineer at Vercel. Previously built Orbit at Recursive Labs.",
   summary:
-    "I build developer tools. Currently at [Vercel](https://vercel.com), working on agent infrastructure. Before that I was a solo founder at [Recursive Labs](https://recursive.ac/), where I built [Orbit](https://orbit.build/), an AI-native IDE in Rust that reached 200+ users with zero marketing. I ship fast and care about craft.",
+    "I build developer tools. I'm at [Vercel](https://vercel.com/) now, working on [fx](https://fx.sh/). Before that, I founded [Recursive Labs](https://recursive.ac/) and built [Orbit](https://orbit.build/), an AI-native IDE in Rust that reached 200+ users without marketing.",
   linkPreviews: {
     "vercel.com": {
       title: "Vercel",
