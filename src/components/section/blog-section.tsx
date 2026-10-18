@@ -5,18 +5,14 @@ export default function BlogSection() {
   const posts = getAllPosts();
 
   return (
-    <section id="blog" className="overflow-hidden">
-      <div className="flex min-h-0 flex-col gap-y-8 w-full">
-        {/* the pill is the section heading */}
-        <div className="flex items-center w-full">
-          <div className="flex-1 h-px bg-linear-to-r from-transparent from-5% via-border via-95% to-transparent" />
-          <h2 className="border bg-primary z-10 rounded-xl px-4 py-1 text-background text-sm font-medium">
-            Writings
-          </h2>
-          <div className="flex-1 h-px bg-linear-to-l from-transparent from-5% via-border via-95% to-transparent" />
-        </div>
-        {/* the whole section fades in from page.tsx; rows don't animate one by one */}
-        <div className="flex flex-col">
+    <section id="blog">
+      <div className="flex min-h-0 flex-col gap-y-6 w-full">
+        {/* same heading style as About and Journey */}
+        <h2 className="text-xl font-semibold">Writings</h2>
+        {/* the whole section fades in from page.tsx; rows don't animate one by one.
+            -mx-3 offsets the rows' px-3, so titles line up with the heading and the
+            hover highlight extends just past the edge. */}
+        <div className="-mx-3 flex flex-col">
           {posts.map((post) => (
             <BlogPostRow key={post.href} post={post} />
           ))}

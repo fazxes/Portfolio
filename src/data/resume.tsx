@@ -1,8 +1,9 @@
 import { Icons } from "@/components/icons";
-import { HomeIcon, NotebookIcon } from "lucide-react";
 
 export const DATA = {
   name: "Pranit Sharma",
+  /** Handle on X and GitHub; also the domain. Used as the alternate site name. */
+  handle: "fazxes",
   initials: "PS",
   url: "https://www.fazxes.com",
   location: "",
@@ -61,10 +62,6 @@ export const DATA = {
   avatarUrl: "https://github.com/fazxes.png",
   // 256px WebP shown on the page (11 KB instead of the 423 KB GitHub PNG).
   avatarImage: "/avatar.webp",
-  navbar: [
-    { href: "/", icon: HomeIcon, label: "Home" },
-    { href: "/blog", icon: NotebookIcon, label: "Writings" },
-  ],
   contact: {
     email: "pranit@vercel.com",
     tel: "",
@@ -73,19 +70,16 @@ export const DATA = {
         name: "GitHub",
         url: "https://github.com/fazxes",
         icon: Icons.github,
-        navbar: true,
       },
       X: {
         name: "X",
         url: "https://x.com/fazxes",
         icon: Icons.x,
-        navbar: true,
       },
       email: {
         name: "Send Email",
         url: "#",
         icon: Icons.email,
-        navbar: false,
       },
     },
   },
@@ -113,7 +107,7 @@ export const DATA = {
       start: "2024",
       end: "2026",
       description:
-        "Founded Recursive Labs to build and ship AI-native developer tools, including Orbit, Agents SDK, Nightshift, OPS, X Agent, Skills, and Mosaic.",
+        "Founded Recursive Labs to build and ship AI-native developer tools, including Orbit, Agents SDK, Nightshift, OPS, X Agent, Skills, and Mosaic.\n\n[Website](https://recursive.ac/) · [GitHub](https://github.com/Recusive)",
     },
   ],
   education: [] as Array<{

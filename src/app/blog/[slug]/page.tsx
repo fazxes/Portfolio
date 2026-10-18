@@ -2,6 +2,7 @@ import { allPosts } from "content-collections";
 import { formatDate } from "@/lib/utils";
 import { DATA } from "@/data/resume";
 import BlogPostCard from "@/components/section/blog-post-card";
+import { breadcrumbs, JsonLd } from "@/components/json-ld";
 import { getAllPosts } from "@/lib/blog";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
@@ -52,6 +53,8 @@ export async function generateMetadata({
     description,
     alternates: {
       canonical: `/blog/${slug}`,
+      // Markdown copy for agents (llms.txt convention).
+      types: { "text/markdown": `/blog/${slug}/index.md` },
     },
     openGraph: {
       title,
@@ -116,32 +119,32 @@ export default async function Blog({
   const getSlug = (post: (typeof sortedPosts)[0]) =>
     post._meta.path.replace(/\.mdx$/, "");
 
-  const jsonLdContent = JSON.stringify({
+  const postUrl = `${DATA.url}/blog/${slug}`;
+  const postJsonLd = {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
     headline: post.title,
     datePublished: post.publishedAt,
-    dateModified: post.publishedAt,
+    dateModified: post.updatedAt ?? post.publishedAt,
     description: post.summary,
     image: post.image
       ? `${DATA.url}${post.image}`
-      : `${DATA.url}/blog/${slug}/opengraph-image`,
-    url: `${DATA.url}/blog/${slug}`,
+      : `${postUrl}/opengraph-image`,
+    url: postUrl,
+    mainEntityOfPage: postUrl,
     author: {
       "@type": "Person",
+      // same @id as the Person on the home page, so Google ties the post to it
+      "@id": `${DATA.url}/#person`,
       name: DATA.name,
+      url: `${DATA.url}/`,
     },
-  }).replace(/</g, "\\u003c");
+  };
 
   return (
     <section id="blog">
-      <script
-        type="application/ld+json"
-        suppressHydrationWarning
-        dangerouslySetInnerHTML={{
-          __html: jsonLdContent,
-        }}
-      />
+      <JsonLd data={postJsonLd} />
+      <JsonLd data={breadcrumbs(DATA.url, [["Writings", "/blog"], [post.title, `/blog/${slug}`]])} />
       <div className="flex justify-start gap-4 items-center">
         <Link href="/blog" className="text-sm text-muted-foreground hover:text-foreground transition-colors border border-border rounded-lg px-2 py-1 inline-flex items-center gap-1 mb-6 group" aria-label="Back to Writings">
           <ChevronLeft className="size-3 group-hover:-translate-x-px transition-transform" />

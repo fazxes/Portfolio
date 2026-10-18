@@ -2,6 +2,7 @@ import BlurFade from "@/components/magicui/blur-fade";
 import BlogPostCard from "@/components/section/blog-post-card";
 import { getAllPosts } from "@/lib/blog";
 import Link from "next/link";
+import { ChevronLeft } from "lucide-react";
 import type { Metadata } from "next";
 import { paginate, normalizePage } from "@/lib/pagination";
 
@@ -43,6 +44,11 @@ export default async function BlogPage({
 
   return (
     <section id="blog">
+      {/* the only way back to the homepage, now that the dock is gone */}
+      <Link href="/" className="text-sm text-muted-foreground hover:text-foreground transition-colors border border-border rounded-lg px-2 py-1 inline-flex items-center gap-1 mb-6 group">
+        <ChevronLeft className="size-3 group-hover:-translate-x-px transition-transform" aria-hidden />
+        Back home
+      </Link>
       <BlurFade delay={BLUR_FADE_DELAY}>
         <h1 className="text-2xl font-semibold tracking-tight mb-2">
           Writings

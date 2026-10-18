@@ -150,12 +150,17 @@
 
 
 
-  .prose code {
+  .prose :where(code):not(:where([class~="not-prose"] *)) {
     @apply m-0! mx-1! border rounded-md! px-1.5 py-0.5 bg-muted/60 dark:bg-muted/40 text-[13px]! font-mono text-foreground/90!;
   }
 
   .prose code::before, .prose code::after {
     @apply content-none!;
+  }
+
+  /* The pill above is for inline code. Code inside a code block sits flat. */
+  .prose pre code {
+    @apply m-0! p-0! border-0! rounded-none! bg-transparent!;
   }
 
   .prose h1 {
@@ -225,7 +230,7 @@
     @apply px-6 py-4 align-middle m-0 whitespace-nowrap;
   }
 
-  .prose tr{
+  .prose :where(tr):not(:where([class~="not-prose"] *)) {
     @apply hover:bg-accent/50! transition-colors! cursor-pointer! h-10!;
   }
 

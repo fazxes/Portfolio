@@ -61,6 +61,29 @@ Project logos and blog cards show transparent art instead of the full OG image. 
 - Projects: `art` points at `public/cards/projects/<name>`.
 - Blog: art is derived from the post slug (the last segment of `href`, or the MDX slug) as `public/cards/blog/<slug>`. A post without art files falls back to its `image`.
 
+### Skills (`/skills`)
+
+Each skill is one file, `content/skills/<slug>.md`: the skill's `SKILL.md` copied as-is, with these frontmatter fields added (schema in `content-collections.ts`):
+
+```yaml
+summary: "One plain sentence for people."   # required: list row, meta description, preview card
+author: "Pranit Sharma"
+mine: true                 # false (or omit) for someone else's skill; those pages are noindex
+license: "MIT"             # keep the upstream value if the file already has one
+licenseUrl: "https://…/LICENSE"
+copyright: "Copyright (c) 2025 Name"   # required for someone else's MIT/Apache text
+source: "https://github.com/owner/repo/tree/main/<skill-folder>"  # README links resolve against this
+install: "npx skills add owner/repo --skill <name>"
+daily: 3                   # position in the Daily list; omit if not a daily driver
+files: ["references/x.md"] # only for skills with no public source: the other files it ships with
+```
+
+A skill with no public `source` gets no source link and no install block, and relative links in its README render as plain text.
+
+- `/skills` lists Daily (by `daily`), Written by me, and By others. `/skills/<slug>` shows the details, the `install` command in a block with a copy button (`src/components/copy-button.tsx`; keep it an `npx` command), and renders the body as plain Markdown on the server. Raw HTML in a README never runs: a prompt-tag block such as `<HARD-GATE>…</HARD-GATE>` becomes a labelled callout (`src/lib/remark-agent-tags.ts`), and any other HTML shows as text.
+- Someone else's skill: copy the upstream file, not a locally edited one, and only when its license allows it (MIT, Apache 2.0). Otherwise keep only the frontmatter and leave the body empty; the page then links to the original instead.
+- Before publishing one of your own skills, remove local paths, internal emails, and team-only process.
+
 ### Next.js specifics
 
 - App Router, Next 16, React 19, Tailwind v4 (`@tailwindcss/postcss`).
@@ -71,7 +94,7 @@ Project logos and blog cards show transparent art instead of the full OG image. 
 ### Component layers
 
 - `src/components/ui/*` — shadcn/ui primitives (Radix wrappers). Use `React.ComponentRef<typeof X>`, not the deprecated `ElementRef`.
-- `src/components/magicui/*` — animated components, kept cheap on purpose: `BlurFade` is CSS-only (`.blur-fade` keyframes in `globals.css`), the dock's hover grow is CSS, and `FlickeringGrid` redraws at ~10 fps and only repaints changed squares. `Snake` follows the same rules: it draws only when it moves (~9 times a second), pauses off screen, and shows one still frame under reduced motion. Don't reintroduce `motion` for these, and fade whole sections rather than every list item.
+- `src/components/magicui/*` — animated components, kept cheap on purpose: `BlurFade` is CSS-only (`.blur-fade` keyframes in `globals.css`), and `FlickeringGrid` redraws at ~10 fps and only repaints changed squares. `Snake` follows the same rules: it draws only when it moves (~9 times a second), pauses off screen, and shows one still frame under reduced motion. Don't reintroduce `motion` for these, and fade whole sections rather than every list item.
 - Markdown (`react-markdown`) is rendered in server components (`work-section.tsx`, `project-entry.tsx`, `page.tsx`) so its parser never ships to the browser; keep it out of `"use client"` files.
 - The hero avatar uses the local `DATA.avatarImage` (256px WebP); `DATA.avatarUrl` (GitHub PNG) stays for OG images and JSON-LD, which need a PNG URL.
 - `src/components/section/*` — page sections, all `DATA`-driven.
@@ -90,6 +113,15 @@ Both `tsconfig.json` and `eslint.config.mjs` are configured strictly. Notable ru
 - `@typescript-eslint/no-misused-promises` — don't pass `async` handlers directly to DOM event props like `onClick`; use a sync wrapper that kicks off the promise.
 
 When you relax or override a rule, prefer fixing the code. Only adjust `eslint.config.mjs` when the rule genuinely doesn't fit the codebase's style.
+
+## Search and agents
+
+Follows Google Search Central's guidance; keep it that way when adding pages.
+- Every page: a unique `title` and a one-to-two sentence `description`, `alternates.canonical`, and a preview image (a route's own `opengraph-image`; setting `openGraph` in metadata drops the inherited one). New routes can use `ogCard` from `src/lib/og-card.tsx`, rendered at build time.
+- Structured data goes through `JsonLd` (`src/components/json-ld.tsx`): `WebSite` + `ProfilePage`/`Person` on the home page (site name, profile), `BlogPosting` + `BreadcrumbList` on posts, `BreadcrumbList` on skills. The post author reuses the home page's Person `@id`.
+- `sitemap.ts` lists only indexable pages and sets `lastModified` only from real dates (Google ignores inaccurate lastmod, and ignores priority/changefreq).
+- Someone else's content (copied skills) is `noindex, follow`, through `isIndexed` in `src/lib/skills.ts`.
+- For agents (llms.txt proposal, llmstxt.org): `/llms.txt`, and an `index.md` copy of the home page, each post, and each skill (`src/lib/agent-markdown.ts`). Pages link their copy with `alternates.types["text/markdown"]`; copies send a canonical `Link` header to the HTML page, or `X-Robots-Tag: noindex` when there's no indexable page. Google Search ignores these files; they're for other AI tools and agents.
 
 ## Copy and tone
 

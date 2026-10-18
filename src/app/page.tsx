@@ -8,7 +8,9 @@ import HackathonsSection from "@/components/section/hackathons-section";
 import ProjectsSection from "@/components/section/projects-section";
 import WorkSection from "@/components/section/work-section";
 import { LinkPreview } from "@/components/link-preview";
+import { JsonLd } from "@/components/json-ld";
 import { Snake } from "@/components/snake";
+import { ThemeSwitcher } from "@/components/theme-switcher";
 import { Icons, type IconProps } from "@/components/icons";
 import { Fragment } from "react";
 import { ArrowUpRight } from "lucide-react";
@@ -25,35 +27,60 @@ const ABOUT_LINKS: Array<{
   external?: boolean;
 }> = [
   { label: "X", href: DATA.contact.social.X.url, icon: Icons.x, iconClassName: "size-3.5", external: true },
+  { label: "GitHub", href: DATA.contact.social.GitHub.url, icon: Icons.github, iconClassName: "size-3.5", external: true },
   { label: "Email", href: `mailto:${DATA.contact.email}`, icon: Icons.email, iconClassName: "size-[18px]" },
-  // page still to be built
   { label: "Skills", href: "/skills" },
 ];
 
 export const metadata: Metadata = {
   alternates: {
     canonical: "/",
+    // Markdown copy for agents (llms.txt convention).
+    types: { "text/markdown": "/index.md" },
   },
 };
 
-const personJsonLd = JSON.stringify({
+const currentJob = DATA.work.find((job) => job.end === "Present");
+
+// WebSite gives Google the site name for results; ProfilePage marks this as the
+// "about me" page of the person it's about.
+const homeJsonLd = {
   "@context": "https://schema.org",
-  "@type": "Person",
-  name: DATA.name,
-  url: DATA.url,
-  image: DATA.avatarUrl,
-  description: DATA.description,
-  sameAs: [DATA.contact.social.GitHub.url, DATA.contact.social.X.url],
-}).replace(/</g, "\\u003c");
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "@id": `${DATA.url}/#website`,
+      name: DATA.name,
+      alternateName: DATA.handle,
+      url: `${DATA.url}/`,
+    },
+    {
+      "@type": "ProfilePage",
+      "@id": `${DATA.url}/#profile`,
+      url: `${DATA.url}/`,
+      name: DATA.name,
+      mainEntity: {
+        "@type": "Person",
+        "@id": `${DATA.url}/#person`,
+        name: DATA.name,
+        alternateName: DATA.handle,
+        url: `${DATA.url}/`,
+        image: DATA.avatarUrl,
+        description: DATA.description,
+        ...(currentJob && {
+          jobTitle: currentJob.title,
+          worksFor: { "@type": "Organization", name: currentJob.company, url: currentJob.href },
+        }),
+        sameAs: [DATA.contact.social.GitHub.url, DATA.contact.social.X.url],
+      },
+    },
+  ],
+};
 
 export default function Page() {
   return (
     <main className="min-h-dvh flex flex-col gap-14 relative">
-      <script
-        type="application/ld+json"
-        suppressHydrationWarning
-        dangerouslySetInnerHTML={{ __html: personJsonLd }}
-      />
+      <JsonLd data={homeJsonLd} />
       <section id="about">
         {/* The name is the page's main heading for search engines and screen
             readers; visitors read it in the first line of the bio instead. */}
@@ -88,8 +115,9 @@ export default function Page() {
             </Markdown>
           </div>
           {/* same pattern as the Website · GitHub · Docs row under Vercel in Journey */}
-          {/* -ml-1: the first icon is centered in a 24px target; this lines it up with the text above */}
-          <p className="mt-4 -ml-1 flex flex-wrap items-center gap-x-1.5 gap-y-1 text-sm text-muted-foreground">
+          {/* -ml-1: the first icon is centered in a 24px target; this lines it up with the text above.
+              A div, not a p: the theme switcher is a button group. */}
+          <div className="mt-4 -ml-1 flex flex-wrap items-center gap-x-1.5 gap-y-1 text-sm text-muted-foreground">
             {ABOUT_LINKS.map((link, i) => (
               <Fragment key={link.label}>
                 {i > 0 && <span aria-hidden>&middot;</span>}
@@ -114,7 +142,9 @@ export default function Page() {
                 )}
               </Fragment>
             ))}
-          </p>
+            <span aria-hidden>&middot;</span>
+            <ThemeSwitcher />
+          </div>
         </BlurFade>
       </section>
       <section id="work">
