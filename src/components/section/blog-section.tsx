@@ -1,13 +1,11 @@
 import BlurFade from "@/components/magicui/blur-fade";
 import BlogPostCard from "@/components/section/blog-post-card";
 import { getAllPosts } from "@/lib/blog";
-import Link from "next/link";
-import { ArrowUpRight } from "lucide-react";
 
 const BLUR_FADE_DELAY = 0.04;
 
 export default function BlogSection() {
-  const posts = getAllPosts().slice(0, 4);
+  const posts = getAllPosts();
 
   return (
     <section id="blog" className="overflow-hidden">
@@ -16,7 +14,7 @@ export default function BlogSection() {
           <div className="flex items-center w-full">
             <div className="flex-1 h-px bg-linear-to-r from-transparent from-5% via-border via-95% to-transparent" />
             <div className="border bg-primary z-10 rounded-xl px-4 py-1">
-              <span className="text-background text-sm font-medium">Blog</span>
+              <span className="text-background text-sm font-medium">Writings</span>
             </div>
             <div className="flex-1 h-px bg-linear-to-l from-transparent from-5% via-border via-95% to-transparent" />
           </div>
@@ -38,15 +36,6 @@ export default function BlogSection() {
               <BlogPostCard post={post} />
             </BlurFade>
           ))}
-        </div>
-        <div className="flex justify-center">
-          <Link
-            href="/blog"
-            className="text-sm text-muted-foreground hover:text-foreground transition-colors inline-flex items-center gap-1"
-          >
-            View more
-            <ArrowUpRight className="size-3" aria-hidden />
-          </Link>
         </div>
       </div>
     </section>

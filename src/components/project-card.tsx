@@ -1,6 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
 
+import { ThemedArt } from "@/components/themed-art";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import { ArrowUpRight } from "lucide-react";
@@ -10,14 +11,30 @@ import Markdown from "react-markdown";
 
 function ProjectImage({
   src,
+  art,
   alt,
   fit = "cover",
 }: {
-  src: string;
+  src?: string;
+  art?: string;
   alt: string;
   fit?: "cover" | "contain";
 }) {
+  const [artError, setArtError] = useState(false);
   const [imageError, setImageError] = useState(false);
+
+  if (art && !artError) {
+    return (
+      <div className="flex h-48 w-full items-center justify-center p-12">
+        <ThemedArt
+          src={art}
+          alt={alt}
+          className="size-full object-contain"
+          onError={() => { setArtError(true); }}
+        />
+      </div>
+    );
+  }
 
   if (!src || imageError) {
     return <div className="w-full h-48 bg-muted" />;
@@ -44,6 +61,7 @@ interface Props {
   tags: readonly string[];
   image?: string;
   imageFit?: "cover" | "contain";
+  art?: string;
   video?: string;
   links?: ReadonlyArray<{
     icon: React.ReactNode;
@@ -61,6 +79,7 @@ export function ProjectCard({
   tags,
   image,
   imageFit,
+  art,
   video,
   links,
   className,
@@ -85,10 +104,8 @@ export function ProjectCard({
               playsInline
               className="w-full h-48 object-cover"
             />
-          ) : image ? (
-            <ProjectImage src={image} alt={title} fit={imageFit} />
           ) : (
-            <div className="w-full h-48 bg-muted" />
+            <ProjectImage src={image} art={art} alt={title} fit={imageFit} />
           )}
         </div>
         <div className="p-6 flex flex-col gap-3 flex-1">

@@ -7,7 +7,6 @@ import Link from "next/link";
 import Markdown from "react-markdown";
 import BlogSection from "@/components/section/blog-section";
 import ContactSection from "@/components/section/contact-section";
-import GitHubSection from "@/components/section/github-section";
 import HackathonsSection from "@/components/section/hackathons-section";
 import ProjectsSection from "@/components/section/projects-section";
 import WorkSection from "@/components/section/work-section";
@@ -99,7 +98,7 @@ export default function Page() {
       <section id="work">
         <div className="flex min-h-0 flex-col gap-y-6">
           <BlurFade delay={BLUR_FADE_DELAY * 5}>
-            <h2 className="text-xl font-semibold">Work Experience</h2>
+            <h2 className="text-xl font-semibold">Journey</h2>
           </BlurFade>
           <BlurFade delay={BLUR_FADE_DELAY * 6}>
             <WorkSection />
@@ -156,26 +155,6 @@ export default function Page() {
         </div>
       </section>
       )}
-      <section id="skills">
-        <div className="flex min-h-0 flex-col gap-y-4">
-          <BlurFade delay={BLUR_FADE_DELAY * 9}>
-            <h2 className="text-xl font-semibold">Skills</h2>
-          </BlurFade>
-          <div className="flex flex-wrap gap-2">
-            {DATA.skills.map((skill, id) => (
-              <BlurFade key={skill.name} delay={BLUR_FADE_DELAY * 10 + id * 0.05}>
-                <div className="border border-border bg-background rounded-xl h-8 w-fit px-4 flex items-center gap-2">
-                  <skill.icon className="size-4 rounded overflow-hidden object-contain" />
-                  <span className="text-foreground text-sm font-medium">{skill.name}</span>
-                </div>
-              </BlurFade>
-            ))}
-          </div>
-        </div>
-      </section>
-      <section id="github">
-        <GitHubSection />
-      </section>
       <section id="projects">
         <BlurFade delay={BLUR_FADE_DELAY * 11}>
           <ProjectsSection />

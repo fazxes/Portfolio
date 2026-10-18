@@ -1,16 +1,5 @@
 import { Icons } from "@/components/icons";
 import { HomeIcon, NotebookIcon } from "lucide-react";
-import { ReactLight } from "@/components/ui/svgs/reactLight";
-import { NextjsIconDark } from "@/components/ui/svgs/nextjsIconDark";
-import { Typescript } from "@/components/ui/svgs/typescript";
-import { Nodejs } from "@/components/ui/svgs/nodejs";
-import { Python } from "@/components/ui/svgs/python";
-import { Bun } from "@/components/ui/svgs/bun";
-import { Zig } from "@/components/ui/svgs/zig";
-import { Rust } from "@/components/ui/svgs/rust";
-import { Tauri } from "@/components/ui/svgs/tauri";
-import { WebAssembly } from "@/components/ui/svgs/webassembly";
-import { Anthropic } from "@/components/ui/svgs/anthropic";
 
 export const DATA = {
   name: "Pranit Sharma",
@@ -69,22 +58,9 @@ export const DATA = {
     },
   },
   avatarUrl: "https://github.com/fazxes.png",
-  skills: [
-    { name: "React", icon: ReactLight },
-    { name: "Next.js", icon: NextjsIconDark },
-    { name: "Typescript", icon: Typescript },
-    { name: "Node.js", icon: Nodejs },
-    { name: "Bun", icon: Bun },
-    { name: "Rust", icon: Rust },
-    { name: "Zig", icon: Zig },
-    { name: "Python", icon: Python },
-    { name: "Tauri", icon: Tauri },
-    { name: "WebAssembly", icon: WebAssembly },
-    { name: "Claude", icon: Anthropic },
-  ],
   navbar: [
     { href: "/", icon: HomeIcon, label: "Home" },
-    { href: "/blog", icon: NotebookIcon, label: "Blog" },
+    { href: "/blog", icon: NotebookIcon, label: "Writings" },
   ],
   contact: {
     email: "",
@@ -173,6 +149,7 @@ export const DATA = {
       ],
       image: "https://fx.sh/og.png",
       imageFit: "contain",
+      art: "/cards/projects/fx",
       video: "",
     },
     {
@@ -191,6 +168,7 @@ export const DATA = {
         },
       ],
       image: "https://www.orbit.build/images/og/og-home.webp",
+      art: "/cards/projects/orbit",
       video: "",
     },
     {
@@ -209,6 +187,7 @@ export const DATA = {
         },
       ],
       image: "https://www.agentsdk.build/og-preview.png",
+      art: "/cards/projects/agents-sdk",
       video: "",
     },
     {
@@ -232,6 +211,7 @@ export const DATA = {
         },
       ],
       image: "https://www.orbit.build/thumbnails/og-nightshift-v4.webp",
+      art: "/cards/projects/nightshift",
       video: "",
     },
     {
@@ -250,6 +230,7 @@ export const DATA = {
         },
       ],
       image: "https://www.orbit.build/thumbnails/introducing-ops-orbit-protocol-server.webp",
+      art: "/cards/projects/ops",
       video: "",
     },
     {
@@ -273,6 +254,7 @@ export const DATA = {
         },
       ],
       image: "https://www.orbit.build/thumbnails/x-og.webp",
+      art: "/cards/projects/x-agent",
       video: "",
     },
     {
@@ -296,6 +278,7 @@ export const DATA = {
         },
       ],
       image: "https://www.orbit.build/thumbnails/skills-v2.webp",
+      art: "/cards/projects/orbit",
       video: "",
     },
     {
@@ -314,6 +297,7 @@ export const DATA = {
         },
       ],
       image: "https://mosaic.sh/og-image.png",
+      art: "/cards/projects/mosaic",
       video: "",
     },
     {
@@ -332,6 +316,7 @@ export const DATA = {
         },
       ],
       image: "https://recursive.ac/images/og.png",
+      art: "/cards/projects/recursive-labs",
       video: "",
     },
   ],

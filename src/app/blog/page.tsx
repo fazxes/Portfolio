@@ -6,18 +6,18 @@ import type { Metadata } from "next";
 import { paginate, normalizePage } from "@/lib/pagination";
 
 export const metadata: Metadata = {
-  title: "Blog",
+  title: "Writings",
   description: "Deep dives, reality checks, and announcements.",
   alternates: {
     canonical: "/blog",
   },
   openGraph: {
-    title: "Blog",
+    title: "Writings",
     description: "Deep dives, reality checks, and announcements.",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Blog",
+    title: "Writings",
     description: "Deep dives, reality checks, and announcements.",
   },
 };
@@ -45,7 +45,7 @@ export default async function BlogPage({
     <section id="blog">
       <BlurFade delay={BLUR_FADE_DELAY}>
         <h1 className="text-2xl font-semibold tracking-tight mb-2">
-          Blog
+          Writings
           <span className="ml-1 bg-card border border-border rounded-md px-2 py-1 text-muted-foreground text-sm">
             {posts.length} posts
           </span>

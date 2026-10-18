@@ -15,7 +15,7 @@ export default function ProjectsSection() {
 
                         />
                         <div className="border bg-primary z-10 rounded-xl px-4 py-1">
-                            <span className="text-background text-sm font-medium">Projects</span>
+                            <span className="text-background text-sm font-medium">Open Source Projects</span>
                         </div>
                         <div
                             className="flex-1 h-px bg-linear-to-l from-transparent from-5% via-border via-95% to-transparent"
@@ -23,9 +23,9 @@ export default function ProjectsSection() {
                         />
                     </div>
                     <div className="flex flex-col gap-y-3 items-center justify-center">
-                        <h2 className="text-3xl font-semibold tracking-tight text-balance sm:text-4xl">Check out my latest work</h2>
+                        <h2 className="text-3xl font-semibold tracking-tight text-balance sm:text-4xl">Building in public</h2>
                         <p className="text-muted-foreground text-pretty text-center md:text-lg">
-                            Developer tools, SDKs, and autonomous agents I&apos;ve built.
+                            Most of what I build is open source.
                         </p>
                     </div>
                 </div>
@@ -45,6 +45,7 @@ export default function ProjectsSection() {
                                 tags={project.technologies}
                                 image={project.image}
                                 imageFit={"imageFit" in project ? project.imageFit : undefined}
+                                art={project.art}
                                 video={project.video}
                                 links={project.links}
                             />

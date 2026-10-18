@@ -2,6 +2,7 @@
 "use client";
 import { useState } from "react";
 import { Badge } from "@/components/ui/badge";
+import { ThemedArt } from "@/components/themed-art";
 import Link from "next/link";
 import { ArrowUpRight, Clock } from "lucide-react";
 import type { BlogPost } from "@/lib/blog";
@@ -15,8 +16,20 @@ function formatDate(iso: string): string {
   });
 }
 
-function PostThumbnail({ src, alt }: { src: string; alt: string }) {
+function PostThumbnail({ src, art, alt }: { src: string; art: string; alt: string }) {
+  const [artError, setArtError] = useState(false);
   const [error, setError] = useState(false);
+
+  if (!artError) {
+    return (
+      <ThemedArt
+        src={art}
+        alt={alt}
+        className="w-full aspect-video object-cover"
+        onError={() => { setArtError(true); }}
+      />
+    );
+  }
 
   if (!src || error) {
     return <div className="w-full aspect-video bg-muted" />;
@@ -41,7 +54,7 @@ export default function BlogPostCard({ post }: { post: BlogPost }) {
       className="group flex flex-col h-full rounded-xl border border-border overflow-hidden hover:ring-2 hover:ring-muted transition-all duration-200"
     >
       <div className="relative shrink-0 overflow-hidden">
-        <PostThumbnail src={post.image} alt={post.title} />
+        <PostThumbnail src={post.image} art={post.art} alt={post.title} />
       </div>
       <div className="p-4 flex flex-col gap-2 flex-1">
         <div className="flex items-start justify-between gap-3">

@@ -21,7 +21,7 @@ Do not skip `pnpm check` after edits. Lint is type-aware and catches things `pnp
 
 ### Single source of truth: `src/data/resume.tsx`
 
-All portfolio content — name, description, work, projects, skills, social links, **blog**, hackathons, education — lives in `DATA` in this one file. `src/app/layout.tsx`, `src/app/page.tsx`, `src/app/blog/page.tsx`, the opengraph-image routes, and every section component read directly from `DATA`. To change site content, edit this file and nothing else.
+All portfolio content — name, description, work, projects, social links, **blog**, hackathons, education — lives in `DATA` in this one file. `src/app/layout.tsx`, `src/app/page.tsx`, `src/app/blog/page.tsx`, the opengraph-image routes, and every section component read directly from `DATA`. To change site content, edit this file and nothing else.
 
 `DATA` is declared `as const`, which matters:
 - Empty arrays (`education`, `hackathons`) get inferred as `readonly never[]` unless explicitly cast (e.g. `[] as Array<{...}>`). Don't remove those casts.
@@ -32,8 +32,8 @@ All portfolio content — name, description, work, projects, skills, social link
 
 Each reads from `DATA` and renders a single vertical section of the page:
 - `work-section.tsx` — Always-visible entries from `DATA.work`. **Descriptions are rendered through `react-markdown`**, so inline links work without hiding role details behind disclosure controls.
-- `projects-section.tsx` → `project-card.tsx` — Grid of `DATA.projects`. Each card is wrapped in a single `<Link>` (whole card is clickable). The per-project badge links live as absolutely-positioned siblings *outside* the main Link (nested `<a>` is invalid HTML). Card shows an OG image at top pulled from `image` field (typically an external URL from the linked site).
-- `blog-section.tsx` — Grid of `DATA.blog` with OG thumbnails. Homepage shows all posts; `/blog` paginates at 8/page.
+- `projects-section.tsx` → `project-card.tsx` — Grid of `DATA.projects`. Each card is wrapped in a single `<Link>` (whole card is clickable). The per-project badge links live as absolutely-positioned siblings *outside* the main Link (nested `<a>` is invalid HTML). Card banner shows the project's logo from `art` on the page background, and falls back to the `image` OG thumbnail (typically an external URL from the linked site) if the art files are missing.
+- `blog-section.tsx` — "Writings": grid of every post (`DATA.blog` plus local MDX posts) with card art thumbnails. `/blog` lists the same posts, 8 per page.
 - `hackathons-section.tsx`, `contact-section.tsx` — straightforward reads.
 
 ### Blog: `DATA.blog` is the source, not `content-collections`
@@ -51,18 +51,17 @@ Project entries in `DATA.projects` have a specific shape that `project-card.tsx`
   technologies: string[],                       // → Badge pills
   links: [{ type, href, icon: <Icons.globe .../> }],  // → sub-link badges top-right
   image: "https://...",                         // → OG thumbnail, external URL is fine
+  art: "/cards/projects/<name>",                // → banner logo, see "Card art" below
   video: "",                                    // → if set, takes precedence over image
 }
 ```
 When pulling metadata from a real site, grab the `<meta property="og:image">` URL for the thumbnail.
 
-### Skills icons
+### Card art
 
-Skill icons are individual single-path SVG components in `src/components/ui/svgs/`. To add a new skill:
-1. Pull the SVG from `https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/<name>.svg` (MIT).
-2. Wrap it as a `(props: SVGProps<SVGSVGElement>) => (...)` component in that directory.
-3. Use `fill="currentColor"` for monochrome icons so they inherit text color, or a hex for brand-colored ones.
-4. Import into `src/data/resume.tsx` and add to `skills`.
+Project and blog cards show transparent art instead of the full OG image. Each piece ships as two files in `public/cards/`, `<name>-light.webp` and `<name>-dark.webp`, rendered by `ThemedArt` (`src/components/themed-art.tsx`), which shows the one matching the theme. In the variant for the other theme, neutral lines (white, cream, black, brown) are flipped so they stay visible, and accent colors stay the same.
+- Projects: `art` points at `public/cards/projects/<name>`.
+- Blog: art is derived from the post slug (the last segment of `href`, or the MDX slug) as `public/cards/blog/<slug>`. A post without art files falls back to its `image`.
 
 ### Next.js specifics
 
