@@ -7,18 +7,18 @@ import { paginate, normalizePage } from "@/lib/pagination";
 
 export const metadata: Metadata = {
   title: "Writings",
-  description: "Deep dives, reality checks, and announcements.",
+  description: "What I've learned building and benchmarking developer tools.",
   alternates: {
     canonical: "/blog",
   },
   openGraph: {
     title: "Writings",
-    description: "Deep dives, reality checks, and announcements.",
+    description: "What I've learned building and benchmarking developer tools.",
   },
   twitter: {
     card: "summary_large_image",
     title: "Writings",
-    description: "Deep dives, reality checks, and announcements.",
+    description: "What I've learned building and benchmarking developer tools.",
   },
 };
 
@@ -51,16 +51,14 @@ export default async function BlogPage({
           </span>
         </h1>
         <p className="text-sm text-muted-foreground mb-8">
-          Deep dives, reality checks, and announcements.
+          What I&apos;ve learned building and benchmarking developer tools.
         </p>
       </BlurFade>
 
       <BlurFade delay={BLUR_FADE_DELAY * 2}>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          {paginatedPosts.map((post, id) => (
-            <BlurFade delay={BLUR_FADE_DELAY * 3 + id * 0.05} key={post.href}>
-              <BlogPostCard post={post} />
-            </BlurFade>
+          {paginatedPosts.map((post) => (
+            <BlogPostCard key={post.href} post={post} />
           ))}
         </div>
       </BlurFade>

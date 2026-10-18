@@ -1,13 +1,11 @@
 /* eslint-disable @next/next/no-img-element */
-"use client";
-import { useState } from "react";
+// Server component: the Markdown is rendered to HTML here, so its parser never
+// ships to the browser.
 import Markdown from "react-markdown";
 import { DATA } from "@/data/resume";
 
 function LogoImage({ src, alt }: { src: string; alt: string }) {
-  const [imageError, setImageError] = useState(false);
-
-  if (!src || imageError) {
+  if (!src) {
     return (
       <div className="size-8 md:size-10 p-1 rounded-full shadow outline-1 -outline-offset-1 outline-black/10 dark:outline-white/10 bg-muted flex-none" />
     );
@@ -18,7 +16,6 @@ function LogoImage({ src, alt }: { src: string; alt: string }) {
       src={src}
       alt={alt}
       className="size-8 md:size-10 p-1 rounded-full shadow outline-1 -outline-offset-1 outline-black/10 dark:outline-white/10 overflow-hidden object-contain flex-none"
-      onError={() => { setImageError(true); }}
     />
   );
 }

@@ -75,6 +75,15 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
+  /* card edges: a 1px ring plus soft lift instead of a solid border */
+  --shadow-border:
+    0px 0px 0px 1px oklch(0 0 0 / 0.06),
+    0px 1px 2px -1px oklch(0 0 0 / 0.06),
+    0px 2px 4px 0px oklch(0 0 0 / 0.04);
+  --shadow-border-hover:
+    0px 0px 0px 1px oklch(0 0 0 / 0.08),
+    0px 1px 2px -1px oklch(0 0 0 / 0.08),
+    0px 2px 4px 0px oklch(0 0 0 / 0.06);
 }
 
 .dark {
@@ -109,6 +118,8 @@
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.556 0 0);
+  --shadow-border: 0 0 0 1px oklch(1 0 0 / 0.08);
+  --shadow-border-hover: 0 0 0 1px oklch(1 0 0 / 0.13);
 }
 
 @layer base {
@@ -237,27 +248,25 @@
 
 }
 
-/* Outside @layer so these override react-tooltip and react-activity-calendar CSS */
-.react-activity-calendar__footer {
-  display: none !important;
+/*
+ * BlurFade entrance. `backwards` holds the first keyframe through
+ * the delay, then hands back to the element's own styles, so no filter or
+ * transform stays applied afterwards.
+ */
+@keyframes blur-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(var(--blur-fade-y));
+    filter: blur(var(--blur-fade-blur));
+  }
 }
 
-
-.react-activity-calendar__scroll-container {
-  scrollbar-width: thin;
-  scrollbar-color: var(--color-border) transparent;
+.blur-fade {
+  animation: blur-fade-in var(--blur-fade-duration) ease-out var(--blur-fade-delay) backwards;
 }
 
-.react-activity-calendar__scroll-container::-webkit-scrollbar {
-  height: 6px;
-}
-
-.react-activity-calendar__scroll-container::-webkit-scrollbar-track {
-  background: transparent;
-  border-radius: 9999px;
-}
-
-.react-activity-calendar__scroll-container::-webkit-scrollbar-thumb {
-  background: var(--color-border);
-  border-radius: 9999px;
+@media (prefers-reduced-motion: reduce) {
+  .blur-fade {
+    animation: none;
+  }
 }

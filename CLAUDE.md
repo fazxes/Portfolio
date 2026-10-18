@@ -32,9 +32,10 @@ All portfolio content — name, description, work, projects, social links, **blo
 
 Each reads from `DATA` and renders a single vertical section of the page:
 - `work-section.tsx` — Always-visible entries from `DATA.work`. **Descriptions are rendered through `react-markdown`**, so inline links work without hiding role details behind disclosure controls.
-- `projects-section.tsx` → `project-card.tsx` — Grid of `DATA.projects`. Each card is wrapped in a single `<Link>` (whole card is clickable). The per-project badge links live as absolutely-positioned siblings *outside* the main Link (nested `<a>` is invalid HTML). Card banner shows the project's logo from `art` on the page background, and falls back to the `image` OG thumbnail (typically an external URL from the linked site) if the art files are missing.
-- `blog-section.tsx` — "Writings": grid of every post (`DATA.blog` plus local MDX posts) with card art thumbnails. `/blog` lists the same posts, 8 per page.
-- `hackathons-section.tsx`, `contact-section.tsx` — straightforward reads.
+- `projects-section.tsx` → `project-entry.tsx` — List of `DATA.projects` laid out like the Journey entries: round logo from `art`, name, dates, and the description underneath. The right corner holds the project's other links (e.g. Source, Docs) and an arrow; a link to the same URL as `href` is not repeated. The title link is stretched over the whole entry (`after:absolute after:inset-0`), so the entry is clickable without wrapping other links (nested `<a>` is invalid HTML).
+- `blog-section.tsx` — "Writings": compact text list (`BlogPostRow`: title, date, read time) of every post (`DATA.blog` plus local MDX posts). `/blog` shows the same posts as cards (`BlogPostCard`), 8 per page.
+- `hackathons-section.tsx` — straightforward read.
+- The page ends with `src/components/snake.tsx`: a decorative, self-playing Snake in a bordered box. Game logic is pure and lives in `src/lib/snake.ts`; the component only draws.
 
 ### Blog: `DATA.blog` is the source, not `content-collections`
 
@@ -42,24 +43,21 @@ The homepage `BlogSection` and `src/app/blog/page.tsx` both read from `DATA.blog
 
 The `content-collections` pipeline (MDX files in `content/*.mdx` → virtual `content-collections` module via `content-collections.ts`) is **still wired up but effectively orphaned**: only `src/app/blog/[slug]/page.tsx` still imports `allPosts`, and nothing links to `/blog/[slug]` internally anymore. If deleting the legacy flow: remove `content/*.mdx`, `content-collections.ts`, the `/blog/[slug]` route, `src/lib/remark-code-meta.ts`, and the `@content-collections/*` deps. Until then, leave the pipeline intact — it builds clean.
 
-### Adding a new project card
+### Adding a new project
 
-Project entries in `DATA.projects` have a specific shape that `project-card.tsx` expects:
+Project entries in `DATA.projects` have a specific shape that `project-entry.tsx` expects:
 ```ts
 {
   title, href, dates, active, description,
-  technologies: string[],                       // → Badge pills
-  links: [{ type, href, icon: <Icons.globe .../> }],  // → sub-link badges top-right
-  image: "https://...",                         // → OG thumbnail, external URL is fine
-  art: "/cards/projects/<name>",                // → banner logo, see "Card art" below
-  video: "",                                    // → if set, takes precedence over image
+  technologies: string[],                       // → metadata only, not shown
+  links: [{ type, href, icon: <Icons.globe .../> }],  // → corner links (skips the one equal to href)
+  art: "/cards/projects/<name>",                // → round logo, see "Card art" below
 }
 ```
-When pulling metadata from a real site, grab the `<meta property="og:image">` URL for the thumbnail.
 
 ### Card art
 
-Project and blog cards show transparent art instead of the full OG image. Each piece ships as two files in `public/cards/`, `<name>-light.webp` and `<name>-dark.webp`, rendered by `ThemedArt` (`src/components/themed-art.tsx`), which shows the one matching the theme. In the variant for the other theme, neutral lines (white, cream, black, brown) are flipped so they stay visible, and accent colors stay the same.
+Project logos and blog cards show transparent art instead of the full OG image. Each piece ships as two files in `public/cards/`, `<name>-light.webp` and `<name>-dark.webp`, rendered by `ThemedArt` (`src/components/themed-art.tsx`), which shows the one matching the theme. In the variant for the other theme, neutral lines (white, cream, black, brown) are flipped so they stay visible, and accent colors stay the same.
 - Projects: `art` points at `public/cards/projects/<name>`.
 - Blog: art is derived from the post slug (the last segment of `href`, or the MDX slug) as `public/cards/blog/<slug>`. A post without art files falls back to its `image`.
 
@@ -73,7 +71,9 @@ Project and blog cards show transparent art instead of the full OG image. Each p
 ### Component layers
 
 - `src/components/ui/*` — shadcn/ui primitives (Radix wrappers). Use `React.ComponentRef<typeof X>`, not the deprecated `ElementRef`.
-- `src/components/magicui/*` — animated components (motion / framer-motion).
+- `src/components/magicui/*` — animated components, kept cheap on purpose: `BlurFade` is CSS-only (`.blur-fade` keyframes in `globals.css`), the dock's hover grow is CSS, and `FlickeringGrid` redraws at ~10 fps and only repaints changed squares. `Snake` follows the same rules: it draws only when it moves (~9 times a second), pauses off screen, and shows one still frame under reduced motion. Don't reintroduce `motion` for these, and fade whole sections rather than every list item.
+- Markdown (`react-markdown`) is rendered in server components (`work-section.tsx`, `project-entry.tsx`, `page.tsx`) so its parser never ships to the browser; keep it out of `"use client"` files.
+- The hero avatar uses the local `DATA.avatarImage` (256px WebP); `DATA.avatarUrl` (GitHub PNG) stays for OG images and JSON-LD, which need a PNG URL.
 - `src/components/section/*` — page sections, all `DATA`-driven.
 - `src/components/mdx/*` — components injected into rendered MDX (still used by the orphaned `/blog/[slug]` flow).
 
