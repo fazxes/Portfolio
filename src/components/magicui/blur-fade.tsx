@@ -1,66 +1,39 @@
-"use client";
+import { cn } from "@/lib/utils";
+import type { CSSProperties, ReactNode } from "react";
 
-import { AnimatePresence, motion, useInView, type Variants } from "motion/react";
-import { useRef } from "react";
-
-type UseInViewOptions = Parameters<typeof useInView>[1];
-type InViewMargin = NonNullable<UseInViewOptions>["margin"];
-
-interface BlurFadeProps {
-  children: React.ReactNode;
-  className?: string;
-  variant?: {
-    hidden: { y: number };
-    visible: { y: number };
-  };
+interface BlurFadeTiming {
+  /** Seconds. */
   duration?: number;
+  /** Seconds. */
   delay?: number;
+  /** Pixels the element slides down from. */
   yOffset?: number;
-  inView?: boolean;
-  inViewMargin?: string;
   blur?: string;
 }
-const BlurFade = ({
-  children,
-  className,
-  variant,
-  duration = 0.4,
-  delay = 0,
-  yOffset = 6,
-  inView = false,
-  inViewMargin = "-50px",
-  blur = "6px",
-}: BlurFadeProps) => {
-  const ref = useRef(null);
-  const inViewResult = useInView(ref, {
-    once: true,
-    ...(inViewMargin ? { margin: inViewMargin as InViewMargin } : {})
-  });
-  const isInView = !inView || inViewResult;
-  const defaultVariants: Variants = {
-    hidden: { y: -yOffset, opacity: 0, filter: `blur(${blur})` },
-    visible: { y: 0, opacity: 1, filter: `blur(0px)` },
-  };
-  const combinedVariants = variant ?? defaultVariants;
-  return (
-    <AnimatePresence>
-      <motion.div
-        ref={ref}
-        initial="hidden"
-        animate={isInView ? "visible" : "hidden"}
-        exit="hidden"
-        variants={combinedVariants}
-        transition={{
-          delay: 0.04 + delay,
-          duration,
-          ease: "easeOut",
-        }}
-        className={className}
-      >
-        {children}
-      </motion.div>
-    </AnimatePresence>
-  );
-};
+
+/** Custom properties read by the `.blur-fade` keyframes in globals.css. */
+function blurFadeStyle({ duration = 0.4, delay = 0, yOffset = 6, blur = "6px" }: BlurFadeTiming): CSSProperties {
+  return {
+    "--blur-fade-duration": `${duration}s`,
+    "--blur-fade-delay": `${delay}s`,
+    "--blur-fade-y": `${-yOffset}px`,
+    "--blur-fade-blur": blur,
+  } as CSSProperties;
+}
+
+interface BlurFadeProps extends BlurFadeTiming {
+  children: ReactNode;
+  className?: string;
+}
+
+/**
+ * One-shot entrance (fade, slide, blur) in plain CSS: it starts with the first
+ * paint, needs no JavaScript, and leaves no filter behind once it finishes.
+ */
+const BlurFade = ({ children, className, delay = 0, ...timing }: BlurFadeProps) => (
+  <div className={cn("blur-fade", className)} style={blurFadeStyle({ ...timing, delay: 0.04 + delay })}>
+    {children}
+  </div>
+);
 
 export default BlurFade;

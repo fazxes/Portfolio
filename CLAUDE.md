@@ -21,7 +21,7 @@ Do not skip `pnpm check` after edits. Lint is type-aware and catches things `pnp
 
 ### Single source of truth: `src/data/resume.tsx`
 
-All portfolio content — name, description, work, projects, skills, social links, **blog**, hackathons, education — lives in `DATA` in this one file. `src/app/layout.tsx`, `src/app/page.tsx`, `src/app/blog/page.tsx`, the opengraph-image routes, and every section component read directly from `DATA`. To change site content, edit this file and nothing else.
+All portfolio content — name, description, work, projects, social links, **blog**, hackathons, education — lives in `DATA` in this one file. `src/app/layout.tsx`, `src/app/page.tsx`, `src/app/blog/page.tsx`, the opengraph-image routes, and every section component read directly from `DATA`. To change site content, edit this file and nothing else.
 
 `DATA` is declared `as const`, which matters:
 - Empty arrays (`education`, `hackathons`) get inferred as `readonly never[]` unless explicitly cast (e.g. `[] as Array<{...}>`). Don't remove those casts.
@@ -32,9 +32,10 @@ All portfolio content — name, description, work, projects, skills, social link
 
 Each reads from `DATA` and renders a single vertical section of the page:
 - `work-section.tsx` — Always-visible entries from `DATA.work`. **Descriptions are rendered through `react-markdown`**, so inline links work without hiding role details behind disclosure controls.
-- `projects-section.tsx` → `project-card.tsx` — Grid of `DATA.projects`. Each card is wrapped in a single `<Link>` (whole card is clickable). The per-project badge links live as absolutely-positioned siblings *outside* the main Link (nested `<a>` is invalid HTML). Card shows an OG image at top pulled from `image` field (typically an external URL from the linked site).
-- `blog-section.tsx` — Grid of `DATA.blog` with OG thumbnails. Homepage shows all posts; `/blog` paginates at 8/page.
-- `hackathons-section.tsx`, `contact-section.tsx` — straightforward reads.
+- `projects-section.tsx` → `project-entry.tsx` — List of `DATA.projects` laid out like the Journey entries: round logo from `art`, name, dates, and the description underneath. The right corner holds the project's other links (e.g. Source, Docs) and an arrow; a link to the same URL as `href` is not repeated. The title link is stretched over the whole entry (`after:absolute after:inset-0`), so the entry is clickable without wrapping other links (nested `<a>` is invalid HTML).
+- `blog-section.tsx` — "Writings": compact text list (`BlogPostRow`: title, date, read time) of every post (`DATA.blog` plus local MDX posts). `/blog` shows the same posts as cards (`BlogPostCard`), 8 per page.
+- `hackathons-section.tsx` — straightforward read.
+- The page ends with `src/components/snake.tsx`: a decorative, self-playing Snake in a bordered box. Game logic is pure and lives in `src/lib/snake.ts`; the component only draws.
 
 ### Blog: `DATA.blog` is the source, not `content-collections`
 
@@ -42,27 +43,46 @@ The homepage `BlogSection` and `src/app/blog/page.tsx` both read from `DATA.blog
 
 The `content-collections` pipeline (MDX files in `content/*.mdx` → virtual `content-collections` module via `content-collections.ts`) is **still wired up but effectively orphaned**: only `src/app/blog/[slug]/page.tsx` still imports `allPosts`, and nothing links to `/blog/[slug]` internally anymore. If deleting the legacy flow: remove `content/*.mdx`, `content-collections.ts`, the `/blog/[slug]` route, `src/lib/remark-code-meta.ts`, and the `@content-collections/*` deps. Until then, leave the pipeline intact — it builds clean.
 
-### Adding a new project card
+### Adding a new project
 
-Project entries in `DATA.projects` have a specific shape that `project-card.tsx` expects:
+Project entries in `DATA.projects` have a specific shape that `project-entry.tsx` expects:
 ```ts
 {
   title, href, dates, active, description,
-  technologies: string[],                       // → Badge pills
-  links: [{ type, href, icon: <Icons.globe .../> }],  // → sub-link badges top-right
-  image: "https://...",                         // → OG thumbnail, external URL is fine
-  video: "",                                    // → if set, takes precedence over image
+  technologies: string[],                       // → metadata only, not shown
+  links: [{ type, href, icon: <Icons.globe .../> }],  // → corner links (skips the one equal to href)
+  art: "/cards/projects/<name>",                // → round logo, see "Card art" below
 }
 ```
-When pulling metadata from a real site, grab the `<meta property="og:image">` URL for the thumbnail.
 
-### Skills icons
+### Card art
 
-Skill icons are individual single-path SVG components in `src/components/ui/svgs/`. To add a new skill:
-1. Pull the SVG from `https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/<name>.svg` (MIT).
-2. Wrap it as a `(props: SVGProps<SVGSVGElement>) => (...)` component in that directory.
-3. Use `fill="currentColor"` for monochrome icons so they inherit text color, or a hex for brand-colored ones.
-4. Import into `src/data/resume.tsx` and add to `skills`.
+Project logos and blog cards show transparent art instead of the full OG image. Each piece ships as two files in `public/cards/`, `<name>-light.webp` and `<name>-dark.webp`, rendered by `ThemedArt` (`src/components/themed-art.tsx`), which shows the one matching the theme. In the variant for the other theme, neutral lines (white, cream, black, brown) are flipped so they stay visible, and accent colors stay the same.
+- Projects: `art` points at `public/cards/projects/<name>`.
+- Blog: art is derived from the post slug (the last segment of `href`, or the MDX slug) as `public/cards/blog/<slug>`. A post without art files falls back to its `image`.
+
+### Skills (`/skills`)
+
+Each skill is one file, `content/skills/<slug>.md`: the skill's `SKILL.md` copied as-is, with these frontmatter fields added (schema in `content-collections.ts`):
+
+```yaml
+summary: "One plain sentence for people."   # required: list row, meta description, preview card
+author: "Pranit Sharma"
+mine: true                 # false (or omit) for someone else's skill; those pages are noindex
+license: "MIT"             # keep the upstream value if the file already has one
+licenseUrl: "https://…/LICENSE"
+copyright: "Copyright (c) 2025 Name"   # required for someone else's MIT/Apache text
+source: "https://github.com/owner/repo/tree/main/<skill-folder>"  # README links resolve against this
+install: "npx skills add owner/repo --skill <name>"
+daily: 3                   # position in the Daily list; omit if not a daily driver
+files: ["references/x.md"] # only for skills with no public source: the other files it ships with
+```
+
+A skill with no public `source` gets no source link and no install block, and relative links in its README render as plain text.
+
+- `/skills` lists Daily (by `daily`), Written by me, and By others. `/skills/<slug>` shows the details, the `install` command in a block with a copy button (`src/components/copy-button.tsx`; keep it an `npx` command), and renders the body as plain Markdown on the server. Raw HTML in a README never runs: a prompt-tag block such as `<HARD-GATE>…</HARD-GATE>` becomes a labelled callout (`src/lib/remark-agent-tags.ts`), and any other HTML shows as text.
+- Someone else's skill: copy the upstream file, not a locally edited one, and only when its license allows it (MIT, Apache 2.0). Otherwise keep only the frontmatter and leave the body empty; the page then links to the original instead.
+- Before publishing one of your own skills, remove local paths, internal emails, and team-only process.
 
 ### Next.js specifics
 
@@ -74,7 +94,9 @@ Skill icons are individual single-path SVG components in `src/components/ui/svgs
 ### Component layers
 
 - `src/components/ui/*` — shadcn/ui primitives (Radix wrappers). Use `React.ComponentRef<typeof X>`, not the deprecated `ElementRef`.
-- `src/components/magicui/*` — animated components (motion / framer-motion).
+- `src/components/magicui/*` — animated components, kept cheap on purpose: `BlurFade` is CSS-only (`.blur-fade` keyframes in `globals.css`), and `FlickeringGrid` redraws at ~10 fps and only repaints changed squares. `Snake` follows the same rules: it draws only when it moves (~9 times a second), pauses off screen, and shows one still frame under reduced motion. Don't reintroduce `motion` for these, and fade whole sections rather than every list item.
+- Markdown (`react-markdown`) is rendered in server components (`work-section.tsx`, `project-entry.tsx`, `page.tsx`) so its parser never ships to the browser; keep it out of `"use client"` files.
+- The hero avatar uses the local `DATA.avatarImage` (256px WebP); `DATA.avatarUrl` (GitHub PNG) stays for OG images and JSON-LD, which need a PNG URL.
 - `src/components/section/*` — page sections, all `DATA`-driven.
 - `src/components/mdx/*` — components injected into rendered MDX (still used by the orphaned `/blog/[slug]` flow).
 
@@ -91,6 +113,15 @@ Both `tsconfig.json` and `eslint.config.mjs` are configured strictly. Notable ru
 - `@typescript-eslint/no-misused-promises` — don't pass `async` handlers directly to DOM event props like `onClick`; use a sync wrapper that kicks off the promise.
 
 When you relax or override a rule, prefer fixing the code. Only adjust `eslint.config.mjs` when the rule genuinely doesn't fit the codebase's style.
+
+## Search and agents
+
+Follows Google Search Central's guidance; keep it that way when adding pages.
+- Every page: a unique `title` and a one-to-two sentence `description`, `alternates.canonical`, and a preview image (a route's own `opengraph-image`; setting `openGraph` in metadata drops the inherited one). New routes can use `ogCard` from `src/lib/og-card.tsx`, rendered at build time.
+- Structured data goes through `JsonLd` (`src/components/json-ld.tsx`): `WebSite` + `ProfilePage`/`Person` on the home page (site name, profile), `BlogPosting` + `BreadcrumbList` on posts, `BreadcrumbList` on skills. The post author reuses the home page's Person `@id`.
+- `sitemap.ts` lists only indexable pages and sets `lastModified` only from real dates (Google ignores inaccurate lastmod, and ignores priority/changefreq).
+- Someone else's content (copied skills) is `noindex, follow`, through `isIndexed` in `src/lib/skills.ts`.
+- For agents (llms.txt proposal, llmstxt.org): `/llms.txt`, and an `index.md` copy of the home page, each post, and each skill (`src/lib/agent-markdown.ts`). Pages link their copy with `alternates.types["text/markdown"]`; copies send a canonical `Link` header to the HTML page, or `X-Robots-Tag: noindex` when there's no indexable page. Google Search ignores these files; they're for other AI tools and agents.
 
 ## Copy and tone
 

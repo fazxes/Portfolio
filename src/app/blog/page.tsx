@@ -2,23 +2,24 @@ import BlurFade from "@/components/magicui/blur-fade";
 import BlogPostCard from "@/components/section/blog-post-card";
 import { getAllPosts } from "@/lib/blog";
 import Link from "next/link";
+import { ChevronLeft } from "lucide-react";
 import type { Metadata } from "next";
 import { paginate, normalizePage } from "@/lib/pagination";
 
 export const metadata: Metadata = {
-  title: "Blog",
-  description: "Deep dives, reality checks, and announcements.",
+  title: "Writings",
+  description: "What I've learned building and benchmarking developer tools.",
   alternates: {
     canonical: "/blog",
   },
   openGraph: {
-    title: "Blog",
-    description: "Deep dives, reality checks, and announcements.",
+    title: "Writings",
+    description: "What I've learned building and benchmarking developer tools.",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Blog",
-    description: "Deep dives, reality checks, and announcements.",
+    title: "Writings",
+    description: "What I've learned building and benchmarking developer tools.",
   },
 };
 
@@ -43,24 +44,27 @@ export default async function BlogPage({
 
   return (
     <section id="blog">
+      {/* the only way back to the homepage, now that the dock is gone */}
+      <Link href="/" className="text-sm text-muted-foreground hover:text-foreground transition-colors border border-border rounded-lg px-2 py-1 inline-flex items-center gap-1 mb-6 group">
+        <ChevronLeft className="size-3 group-hover:-translate-x-px transition-transform" aria-hidden />
+        Back home
+      </Link>
       <BlurFade delay={BLUR_FADE_DELAY}>
         <h1 className="text-2xl font-semibold tracking-tight mb-2">
-          Blog
+          Writings
           <span className="ml-1 bg-card border border-border rounded-md px-2 py-1 text-muted-foreground text-sm">
             {posts.length} posts
           </span>
         </h1>
         <p className="text-sm text-muted-foreground mb-8">
-          Deep dives, reality checks, and announcements.
+          What I&apos;ve learned building and benchmarking developer tools.
         </p>
       </BlurFade>
 
       <BlurFade delay={BLUR_FADE_DELAY * 2}>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          {paginatedPosts.map((post, id) => (
-            <BlurFade delay={BLUR_FADE_DELAY * 3 + id * 0.05} key={post.href}>
-              <BlogPostCard post={post} />
-            </BlurFade>
+          {paginatedPosts.map((post) => (
+            <BlogPostCard key={post.href} post={post} />
           ))}
         </div>
       </BlurFade>

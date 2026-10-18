@@ -1,105 +1,156 @@
 /* eslint-disable @next/next/no-img-element */
 import BlurFade from "@/components/magicui/blur-fade";
-import BlurFadeText from "@/components/magicui/blur-fade-text";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { DATA } from "@/data/resume";
 import Link from "next/link";
 import Markdown from "react-markdown";
 import BlogSection from "@/components/section/blog-section";
-import ContactSection from "@/components/section/contact-section";
-import GitHubSection from "@/components/section/github-section";
 import HackathonsSection from "@/components/section/hackathons-section";
 import ProjectsSection from "@/components/section/projects-section";
 import WorkSection from "@/components/section/work-section";
 import { LinkPreview } from "@/components/link-preview";
+import { JsonLd } from "@/components/json-ld";
+import { Snake } from "@/components/snake";
+import { ThemeSwitcher } from "@/components/theme-switcher";
+import { Icons, type IconProps } from "@/components/icons";
+import { Fragment } from "react";
 import { ArrowUpRight } from "lucide-react";
 import type { Metadata } from "next";
 
 const BLUR_FADE_DELAY = 0.04;
 
+const ABOUT_LINKS: Array<{
+  label: string;
+  href: string;
+  icon?: (props: IconProps) => React.JSX.Element;
+  /** Per-icon size so they read the same: the X glyph fills its box, the mail outline has padding. */
+  iconClassName?: string;
+  external?: boolean;
+}> = [
+  { label: "X", href: DATA.contact.social.X.url, icon: Icons.x, iconClassName: "size-3.5", external: true },
+  { label: "GitHub", href: DATA.contact.social.GitHub.url, icon: Icons.github, iconClassName: "size-3.5", external: true },
+  { label: "Email", href: `mailto:${DATA.contact.email}`, icon: Icons.email, iconClassName: "size-[18px]" },
+  { label: "Skills", href: "/skills" },
+];
+
 export const metadata: Metadata = {
   alternates: {
     canonical: "/",
+    // Markdown copy for agents (llms.txt convention).
+    types: { "text/markdown": "/index.md" },
   },
 };
 
-const personJsonLd = JSON.stringify({
+const currentJob = DATA.work.find((job) => job.end === "Present");
+
+// WebSite gives Google the site name for results; ProfilePage marks this as the
+// "about me" page of the person it's about.
+const homeJsonLd = {
   "@context": "https://schema.org",
-  "@type": "Person",
-  name: DATA.name,
-  url: DATA.url,
-  image: DATA.avatarUrl,
-  description: DATA.description,
-  sameAs: [DATA.contact.social.GitHub.url, DATA.contact.social.X.url],
-}).replace(/</g, "\\u003c");
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "@id": `${DATA.url}/#website`,
+      name: DATA.name,
+      alternateName: DATA.handle,
+      url: `${DATA.url}/`,
+    },
+    {
+      "@type": "ProfilePage",
+      "@id": `${DATA.url}/#profile`,
+      url: `${DATA.url}/`,
+      name: DATA.name,
+      mainEntity: {
+        "@type": "Person",
+        "@id": `${DATA.url}/#person`,
+        name: DATA.name,
+        alternateName: DATA.handle,
+        url: `${DATA.url}/`,
+        image: DATA.avatarUrl,
+        description: DATA.description,
+        ...(currentJob && {
+          jobTitle: currentJob.title,
+          worksFor: { "@type": "Organization", name: currentJob.company, url: currentJob.href },
+        }),
+        sameAs: [DATA.contact.social.GitHub.url, DATA.contact.social.X.url],
+      },
+    },
+  ],
+};
 
 export default function Page() {
   return (
     <main className="min-h-dvh flex flex-col gap-14 relative">
-      <script
-        type="application/ld+json"
-        suppressHydrationWarning
-        dangerouslySetInnerHTML={{ __html: personJsonLd }}
-      />
-      <section id="hero">
-        <div className="mx-auto w-full max-w-2xl space-y-8">
-          <div className="gap-2 gap-y-6 flex flex-col md:flex-row justify-between">
-            <div className="gap-2 flex flex-col order-2 md:order-1">
-              <BlurFade delay={BLUR_FADE_DELAY} yOffset={8} blur="8px">
-                <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl lg:text-5xl">
-                  Hi, I&apos;m{" "}
-                  <LinkPreview
-                    href={DATA.contact.social.GitHub.url}
-                    className="decoration-muted-foreground/40 underline-offset-[6px] hover:underline"
-                  >
-                    {DATA.name.split(" ")[0]}
-                  </LinkPreview>
-                </h1>
-              </BlurFade>
-              <BlurFadeText
-                className="text-muted-foreground text-pretty max-w-[600px] md:text-lg lg:text-xl"
-                delay={BLUR_FADE_DELAY}
-                text={DATA.description}
-              />
-            </div>
-            <BlurFade delay={BLUR_FADE_DELAY} className="order-1 md:order-2">
-              <Avatar className="size-24 md:size-32 rounded-full shadow-lg ring-4 ring-muted">
-                <AvatarImage alt={DATA.name} src={DATA.avatarUrl} />
-                <AvatarFallback>{DATA.initials}</AvatarFallback>
-              </Avatar>
-            </BlurFade>
-          </div>
-        </div>
-      </section>
+      <JsonLd data={homeJsonLd} />
       <section id="about">
-        <div className="flex min-h-0 flex-col gap-y-4">
-          <BlurFade delay={BLUR_FADE_DELAY * 3}>
-            <h2 className="text-xl font-semibold">About</h2>
-          </BlurFade>
-          <BlurFade delay={BLUR_FADE_DELAY * 4}>
-            <div className="prose max-w-full text-pretty font-sans leading-relaxed text-muted-foreground dark:prose-invert">
-              <Markdown
-                components={{
-                  a: ({ href, children, className }) => (
-                    <LinkPreview
-                      href={href ?? "#"}
-                      className={className}
-                    >
-                      {children}
-                    </LinkPreview>
-                  ),
-                }}
-              >
-                {DATA.summary}
-              </Markdown>
-            </div>
-          </BlurFade>
-        </div>
+        {/* The name is the page's main heading for search engines and screen
+            readers; visitors read it in the first line of the bio instead. */}
+        <h1 className="sr-only">{DATA.name}</h1>
+        {/* flow-root contains the floated photo; the bio wraps beside it, then
+            runs full width like the old About paragraph. */}
+        <BlurFade delay={BLUR_FADE_DELAY} className="flow-root">
+          {/* plain img: shows on first paint instead of waiting for JS to load it */}
+          <img
+            src={DATA.avatarImage}
+            alt={DATA.name}
+            width={128}
+            height={128}
+            fetchPriority="high"
+            className="float-right mb-2 ml-6 size-24 md:size-32 rounded-full object-cover shadow-lg ring-4 ring-muted"
+          />
+          <h2 className="text-xl font-semibold">About</h2>
+          <div className="prose mt-4 max-w-full text-pretty font-sans leading-relaxed text-muted-foreground dark:prose-invert">
+            <Markdown
+              components={{
+                a: ({ href, children, className }) => (
+                  <LinkPreview
+                    href={href ?? "#"}
+                    className={className}
+                  >
+                    {children}
+                  </LinkPreview>
+                ),
+              }}
+            >
+              {DATA.summary}
+            </Markdown>
+          </div>
+          {/* same pattern as the Website · GitHub · Docs row under Vercel in Journey */}
+          {/* -ml-1: the first icon is centered in a 24px target; this lines it up with the text above.
+              A div, not a p: the theme switcher is a button group. */}
+          <div className="mt-4 -ml-1 flex flex-wrap items-center gap-x-1.5 gap-y-1 text-sm text-muted-foreground">
+            {ABOUT_LINKS.map((link, i) => (
+              <Fragment key={link.label}>
+                {i > 0 && <span aria-hidden>&middot;</span>}
+                {link.icon ? (
+                  // icon-only: the label names it for screen readers and the tooltip
+                  <Link
+                    href={link.href}
+                    {...(link.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+                    aria-label={link.label}
+                    title={link.label}
+                    className="inline-flex size-6 items-center justify-center text-foreground"
+                  >
+                    <link.icon className={link.iconClassName ?? "size-4"} aria-hidden />
+                  </Link>
+                ) : (
+                  <Link
+                    href={link.href}
+                    className="font-medium text-foreground underline underline-offset-4"
+                  >
+                    {link.label}
+                  </Link>
+                )}
+              </Fragment>
+            ))}
+            <span aria-hidden>&middot;</span>
+            <ThemeSwitcher />
+          </div>
+        </BlurFade>
       </section>
       <section id="work">
         <div className="flex min-h-0 flex-col gap-y-6">
           <BlurFade delay={BLUR_FADE_DELAY * 5}>
-            <h2 className="text-xl font-semibold">Work Experience</h2>
+            <h2 className="text-xl font-semibold">Journey</h2>
           </BlurFade>
           <BlurFade delay={BLUR_FADE_DELAY * 6}>
             <WorkSection />
@@ -156,26 +207,6 @@ export default function Page() {
         </div>
       </section>
       )}
-      <section id="skills">
-        <div className="flex min-h-0 flex-col gap-y-4">
-          <BlurFade delay={BLUR_FADE_DELAY * 9}>
-            <h2 className="text-xl font-semibold">Skills</h2>
-          </BlurFade>
-          <div className="flex flex-wrap gap-2">
-            {DATA.skills.map((skill, id) => (
-              <BlurFade key={skill.name} delay={BLUR_FADE_DELAY * 10 + id * 0.05}>
-                <div className="border border-border bg-background rounded-xl h-8 w-fit px-4 flex items-center gap-2">
-                  <skill.icon className="size-4 rounded overflow-hidden object-contain" />
-                  <span className="text-foreground text-sm font-medium">{skill.name}</span>
-                </div>
-              </BlurFade>
-            ))}
-          </div>
-        </div>
-      </section>
-      <section id="github">
-        <GitHubSection />
-      </section>
       <section id="projects">
         <BlurFade delay={BLUR_FADE_DELAY * 11}>
           <ProjectsSection />
@@ -193,9 +224,12 @@ export default function Page() {
         </BlurFade>
       </section>
       )}
-      <section id="contact">
+      {/* decorative self-playing Snake; hidden from screen readers */}
+      <section id="snake" aria-hidden="true">
         <BlurFade delay={BLUR_FADE_DELAY * 16}>
-          <ContactSection />
+          <div className="rounded-xl border p-3">
+            <Snake />
+          </div>
         </BlurFade>
       </section>
     </main>
