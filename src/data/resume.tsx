@@ -147,6 +147,51 @@ export const DATA = {
       art: "/cards/projects/fx",
     },
     {
+      title: "fx0",
+      href: "https://fx0.vercel.dev",
+      dates: "2026 - Present",
+      active: true,
+      description:
+        "A lightweight, open-source design agent built on libfx that turns a description of a page into one HTML file.",
+      technologies: ["TypeScript", "libfx", "Design Agent", "Open Source"],
+      links: [
+        {
+          type: "Website",
+          href: "https://fx0.vercel.dev",
+          icon: <Icons.globe className="size-3" />,
+        },
+        {
+          type: "Source",
+          href: "https://github.com/vercel-labs/fx0",
+          icon: <Icons.github className="size-3" />,
+        },
+      ],
+      // fx0's own mark (fx plus a slashed zero), from components/brand.tsx in vercel-labs/fx0
+      art: "/cards/projects/fx0",
+    },
+    {
+      title: "libfx",
+      href: "https://www.npmjs.com/package/libfx",
+      dates: "2026 - Present",
+      active: true,
+      description:
+        "The fx agent as a JavaScript library: give it a model, instructions, and your own tools, and it runs durable sessions.",
+      technologies: ["TypeScript", "npm", "Agent SDK", "Open Source"],
+      links: [
+        {
+          type: "npm",
+          href: "https://www.npmjs.com/package/libfx",
+          icon: <Icons.globe className="size-3" />,
+        },
+        {
+          type: "Source",
+          href: "https://github.com/vercel-labs/fx/tree/main/sdk",
+          icon: <Icons.github className="size-3" />,
+        },
+      ],
+      art: "/cards/projects/fx",
+    },
+    {
       title: "Orbit",
       href: "https://orbit.build/",
       dates: "2024 - Present",
